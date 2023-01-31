@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e0TVDICf3lSj+NpUYMNxJ4wI8hAWGeLU8vgSe8yJQxsWoApn2RrloZXkkVtmlZOTP2D/rTLJUhu9aD8h3AH5UA==",
+  "dgSpecHash": "2GTqC7KVhL9CQG5jrFQaaI4L6H3nms1Qb537cR6CSTOXtEG+wMosp26cu7eCkjUuap2hpi2+qbsKLiLqr6qwyA==",
   "success": true,
-  "projectFilePath": "C:\\Github\\DataSciene\\WebApplication2\\IMDB\\IMDB.csproj",
+  "projectFilePath": "C:\\Github\\DataSciene\\IMDB\\IMDB\\IMDB.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

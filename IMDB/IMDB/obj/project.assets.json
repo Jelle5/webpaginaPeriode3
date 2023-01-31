@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Github\\DataSciene\\WebApplication2\\IMDB\\IMDB.csproj",
+      "projectUniqueName": "C:\\Github\\DataSciene\\IMDB\\IMDB\\IMDB.csproj",
       "projectName": "IMDB",
-      "projectPath": "C:\\Github\\DataSciene\\WebApplication2\\IMDB\\IMDB.csproj",
+      "projectPath": "C:\\Github\\DataSciene\\IMDB\\IMDB\\IMDB.csproj",
       "packagesPath": "C:\\Users\\MGdeJ\\.nuget\\packages\\",
-      "outputPath": "C:\\Github\\DataSciene\\WebApplication2\\IMDB\\obj\\",
+      "outputPath": "C:\\Github\\DataSciene\\IMDB\\IMDB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\MGdeJ\\AppData\\Roaming\\NuGet\\NuGet.Config"
