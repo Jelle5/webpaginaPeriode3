@@ -22,7 +22,7 @@ def demographics(move, tconst):
             movie_rating["tconst"] = tconst
 
             cols = row.find('td')
-            for col in cols:
+            #for col in cols:
 
 
 def ratings(movie, tconst):
