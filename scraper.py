@@ -2,27 +2,56 @@ import csv
 
 from bs4 import BeautifulSoup
 import requests
+import csv
 
 headers = {'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0"}
 
 movies = []
+demographs = []
+movies_ratings = []
 
-def demographics(move, tconst):
+def demographics(movie, tconst):
     url = "https://www.imdb.com/title/" + tconst + "/ratings/"
 
     response = requests.get(url, headers=headers, timeout=5)
     soup = BeautifulSoup(response.content, 'html5lib')
 
-    table = soup.find('table')
-    if table is not None:
-        rows = table.findAll('tr')
-        movie_rating = {}
+    if soup.find('div', attrs={'class':'sectionHeading'}) == "IMDb users":
 
-        for row in rows:
-            movie_rating["tconst"] = tconst
+            table = soup.findAll('table')[1]
 
-            cols = row.find('td')
-            #for col in cols:
+            rows = table.findAll('tr')[1:]
+            demograph = {}
+
+            i = 0
+            for row in rows:
+                demograph["tconst"] = tconst
+                cols = row.findAll('td')
+
+                if i == 0:
+                    demograph["All_All"] = cols[1].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["All_under_18"] = cols[2].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["All_18_29"] = cols[3].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["All_30_44"] = cols[4].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["All_45_plus"] = cols[5].text.strip().replace("\n            \n                \n                    ","/")
+
+                if i == 1:
+                    demograph["Male_All"] = cols[1].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Male_under_18"] = cols[2].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Male_18_29"] = cols[3].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Male_30_44"] = cols[4].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Male_45_plus"] = cols[5].text.strip().replace("\n            \n                \n                    ","/")
+
+                if i == 2:
+                    demograph["Female_All"] = cols[1].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Female_under_18"] = cols[2].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Female_18_29"] = cols[3].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Female_30_44"] = cols[4].text.strip().replace("\n            \n                \n                    ","/")
+                    demograph["Female_45_plus"] = cols[5].text.strip().replace("\n            \n                \n                    ","/")
+
+                i = i + 1
+
+            demographs.append(demograph)
 
 
 def ratings(movie, tconst):
@@ -51,7 +80,9 @@ def ratings(movie, tconst):
             if votes is not None:
                 movie_rating["votes"] = votes.text.strip()
 
-            print(movie_rating)
+        movies_ratings.append(movie_rating)
+
+    demographics(movie,tconst)
 
 def extract(tconst, soup):
     movie = {}
@@ -106,7 +137,7 @@ def extract(tconst, soup):
         else:
             movie["SoundMix"] = SoundMix.find('a').text
 
-    print(movie)
+    movies.append(movie)
 
     ratings(movie, tconst)
 
@@ -120,4 +151,27 @@ lines = file.read().splitlines()
 file.close()
 
 for line in lines:
+    print(line)
     scrape(line, 'https://www.imdb.com/title/' + line)
+
+
+filename = 'movies.csv'
+with open(filename, 'w', newline='') as f:
+    w = csv.DictWriter(f,['tconst','budget','grossdomestic','grossworldwide','openingweekend','color0','color1','color2','soundmix0','soundmix1','soundmix2'])
+    w.writeheader()
+    for movie in movies:
+        w.writerow(movie)
+
+filename = 'ratings.csv'
+with open(filename, 'w', newline='') as f:
+    w = csv.DictWriter(f,['tconst','rating','percentage','votes'])
+    w.writeheader()
+    for rating in ratings:
+        w.writerow(rating)
+
+filename = 'demograph.csv'
+with open(filename, 'w', newline='') as f:
+    w = csv.DictWriter(f,['tconst','All_All','All_under_18','All_under_18','Male_All','Male_under_18','Male_18_29','Male_30_44','Male_45_plus','Female_All','Female_under_18','Female_18_29','Female_30_44','Female_45_plus'])
+    w.writeheader()
+    for demograph in demographs:
+        w.writerow(demograph)
