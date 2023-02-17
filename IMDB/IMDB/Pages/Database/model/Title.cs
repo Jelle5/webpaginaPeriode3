@@ -8,7 +8,7 @@ public class Title
     
     public string primary { get; set; }
     
-    public int isadult { get; set; }
+    public bool isadult { get; set; }
     
     public int startyear { get; set; }
     
@@ -23,6 +23,4 @@ public class Title
     public int seasonnr { get; set; }
     
     public int episodenr { get; set; }
-    
-    public string parent { get; set; }
 }

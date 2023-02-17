@@ -11,10 +11,10 @@ public class TitleRepo
     {
         return new DbUtils().Connect();
     }
-    
-    public IEnumerable<Title> getAll ()
+
+    public IEnumerable<Title> getAll()
     {
-        string sql = "SELECT * FROM title LIMIT 100";
+        string sql = @"SELECT * FROM title WHERE ""startYear"" = 2000 LIMIT 100";
 
         using var connection = getConnection();
         var title = connection.Query<Title>(sql);

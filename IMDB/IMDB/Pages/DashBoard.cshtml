@@ -1,4 +1,6 @@
 @page
+@using WebApplication2.Pages.Database.model
+@using WebApplication2.Pages.Database.repository
 @model WebApplication2.Pages.DashBoard
 
 @{
@@ -18,22 +20,33 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Birth year</th>
-            <th>Death year</th>
-            <th>Primary profession</th>
-            <th>Known for titles</th>
+            <th>Primary</th>
+            <th>Type</th>
+            <th>is adult</th>
+            <th>start year</th>
+            <th>end year</th>
+            <th>Duration minutes</th>
+             <th>average rating</th>
+            <th>number of votes</th>
+            <th>season number</th>
+            <th>episode number</th>
         </tr>
         </thead>
         <tbody>
-        @for (int i = 0; i < 10; i++)
+        @foreach (var title in Model.titles)
         {
             <tr>
-                <td><a href="/">@i</a></td>
-                <td>@i</td>
-                <td>@i</td>
-                <td>@i</td>
-                <td>@i</td>
+                <td><a href="/">@title.primary</a></td>
+                <td>@title.type</td>
+                <td>@title.isadult</td>
+                <td>@title.startyear</td>
+                <td>@title.endyear</td>
+                <td>@title.runtimemin</td>
+                <td>@title.averagerating</td>
+                <td>@title.numvotes</td>
+                <td>@title.seasonnr</td>
+                <td>@title.episodenr</td>
+
             </tr>
         }
         </tbody>
