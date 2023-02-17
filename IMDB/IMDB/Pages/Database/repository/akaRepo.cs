@@ -1,24 +1,23 @@
 using System.Data;
 using Dapper;
-using Npgsql;
 using WebApplication2.Pages.Database.model;
 
 namespace WebApplication2.Pages.Database.repository;
 
-public class TitleRepo
+public class akaRepo
 {
     private IDbConnection getConnection()
     {
         return new DbUtils().Connect();
     }
 
-    public IEnumerable<Title> getAll()
+    public IEnumerable<aka> getAll()
     {
-        string sql = @"SELECT * FROM title LIMIT 100";
+        string sql = @"SELECT * FROM aka LIMIT 100";
 
         using var connection = getConnection();
-        var title = connection.Query<Title>(sql);
+        var aka = connection.Query<aka>(sql);
 
-        return title;
+        return aka;
     }
 }

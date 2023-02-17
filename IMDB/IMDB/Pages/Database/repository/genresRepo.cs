@@ -1,24 +1,23 @@
 using System.Data;
 using Dapper;
-using Npgsql;
 using WebApplication2.Pages.Database.model;
 
 namespace WebApplication2.Pages.Database.repository;
 
-public class TitleRepo
+public class genresRepo
 {
     private IDbConnection getConnection()
     {
         return new DbUtils().Connect();
     }
 
-    public IEnumerable<Title> getAll()
+    public IEnumerable<genres> getAll()
     {
-        string sql = @"SELECT * FROM title LIMIT 100";
+        string sql = @"SELECT * FROM genres LIMIT 100";
 
         using var connection = getConnection();
-        var title = connection.Query<Title>(sql);
+        var genres = connection.Query<genres>(sql);
 
-        return title;
+        return genres;
     }
 }
