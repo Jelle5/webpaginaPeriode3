@@ -1,0 +1,10 @@
+SELECT
+tconst,
+gconst
+FROM 
+(select 1 n union all
+select 2 union all select 3 union all
+select 4 union all select 5) numbers
+INNER JOIN title ON CHAR_LENGTH(genres)-CHAR_LENGTH(REPLACE(genres,',','')) >= numbers.n-1
+INNER JOIN genres ON genres.genre = split_part(split_part(genres, ',', numbers.n), ',', -1)
+order by tconst, n
