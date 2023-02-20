@@ -14,7 +14,7 @@ public class TitleRepo
 
     public IEnumerable<Title> getAll()
     {
-        string sql = @"SELECT * FROM title LIMIT 100";
+        string sql = @"SELECT * FROM title order by random() LIMIT 100";
 
         using var connection = getConnection();
         var title = connection.Query<Title>(sql);

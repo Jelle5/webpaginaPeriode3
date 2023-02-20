@@ -2,11 +2,11 @@ namespace WebApplication2.Pages.Database.model;
 
 public class individual
 {
-    private string nconst { get; set; }
+    public string nconst { get; set; }
     
-    private string primaryName { get; set; }
+    public string primary { get; set; }
     
-    private int birthYear { get; set; }
+    public int birthyear { get; set; }
     
-    private int deathYear { get; set; }
+    public int deathyear { get; set; }
 }
