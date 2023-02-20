@@ -21,7 +21,7 @@ proxy_pool = itertools.cycle(proxies)
 
 conn = psycopg2.connect(
     host = 'localhost',
-    dbname = 'Scraper',
+    dbname = 'imdb',
     user = 'Marten',
     password = '9624',
     port = 5432
@@ -419,7 +419,7 @@ lines = file.read().splitlines()
 file.close()
 
 for line in lines:
-    cur.execute("SELECT tconst FROM movies WHERE tconst=%s", (line,))
+    cur.execute("SELECT tconst FROM title WHERE tconst=%s", (line,))
     if cur.fetchone() is not None:
         # line already exists in database, skip to next line
         continue
