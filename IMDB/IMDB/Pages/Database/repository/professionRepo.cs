@@ -20,4 +20,15 @@ public class professionRepo
 
         return profession;
     }
+    
+    public IEnumerable<profession> getByNconst(string Nconst) {
+        string sql = @"SELECT p.* FROM profession p 
+                        INNER JOIN professions ps on p.pconst = ps.pconst
+                        WHERE ps.nconst = @Nconst";
+
+        using var connection = getConnection();
+    var profession = connection.Query<profession>(sql, new{Nconst = Nconst});
+
+        return profession;
+}
 }

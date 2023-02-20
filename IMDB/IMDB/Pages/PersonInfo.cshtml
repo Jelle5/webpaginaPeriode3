@@ -1,0 +1,78 @@
+@page
+@model WebApplication2.Pages.PersonInfo
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <!--<link rel="stylesheet" href="/css/dash.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Dashboard</title>
+</head>
+<body>
+<div>
+    <h1>@Model.nname</h1>
+    <a href="https://imdb.com/name/@Model.Nconst">imdb</a>
+</div>
+
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>birthYear</th>
+            <th>deathYear</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var individual in Model.individuals)
+        {
+            <tr>
+                <td>@individual.birthyear</td>
+                <td>@individual.deathyear</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Naam</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var title in Model.Titles)
+        {
+            <tr>
+        <td>@title.primary</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>jobs</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var jobs in Model.professions)
+        {
+            <tr>
+            <td>@jobs.Profession</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

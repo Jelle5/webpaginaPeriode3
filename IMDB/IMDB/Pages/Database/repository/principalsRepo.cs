@@ -20,4 +20,14 @@ public class principalsRepo
 
         return principals;
     }
+    
+    public IEnumerable<principals> getByNconst(string Nconst)
+    {
+        string sql = @"SELECT * FROM principals LIMIT 100";
+
+        using var connection = getConnection();
+        var principals = connection.Query<principals>(sql);
+
+        return principals;
+    }
 }

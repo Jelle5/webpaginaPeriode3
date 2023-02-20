@@ -2,7 +2,7 @@ namespace WebApplication2.Pages.Database.model;
 
 public class professions
 {
-    private string nconst { get; set; }
+    public string nconst { get; set; }
     
-    private string pconst { get; set; }
+    public string pconst { get; set; }
 }

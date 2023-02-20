@@ -2,7 +2,7 @@ namespace WebApplication2.Pages.Database.model;
 
 public class genre
 {
-    private string gconst { get; set; }
+    public string gconst { get; set; }
     
-    private string? Genre { get; set; }
+    public string Genre { get; set; }
 }

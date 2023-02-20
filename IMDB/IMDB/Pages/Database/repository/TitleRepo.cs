@@ -14,10 +14,32 @@ public class TitleRepo
 
     public IEnumerable<Title> getAll()
     {
-        string sql = @"SELECT * FROM title LIMIT 100";
+        string sql = @"SELECT * FROM title order by random() LIMIT 100";
 
         using var connection = getConnection();
         var title = connection.Query<Title>(sql);
+
+        return title;
+    }
+    
+    public IEnumerable<Title> getTitle(string Tconst)
+    {
+        string sql = @"SELECT * FROM title WHERE tconst = @Tconst";
+
+        using var connection = getConnection();
+        var title = connection.Query<Title>(sql, new{ Tconst = Tconst });
+
+        return title;
+    }
+
+    public IEnumerable<Title> getByNconst(string Nconst)
+    {
+        string sql = @"SELECT t.* FROM title t 
+                        INNER JOIN principals p on t.tconst = p.tconst
+                        WHERE Nconst = @Nconst";
+
+        using var connection = getConnection();
+        var title = connection.Query<Title>(sql, new{ Nconst = Nconst });
 
         return title;
     }
