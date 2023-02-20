@@ -9,4 +9,5 @@ public class individual
     public int birthyear { get; set; }
     
     public int deathyear { get; set; }
+    
 }
