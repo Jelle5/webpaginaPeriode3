@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Data;
 using Dapper;
 using Npgsql;
@@ -34,13 +35,19 @@ public class TitleRepo
 
     public IEnumerable<Title> getByNconst(string Nconst)
     {
-        string sql = @"SELECT t.* FROM title t 
+        
+            string sql = @"SELECT t.*, p.* FROM title t 
                         INNER JOIN principals p on t.tconst = p.tconst
                         WHERE Nconst = @Nconst";
 
-        using var connection = getConnection();
-        var title = connection.Query<Title>(sql, new{ Nconst = Nconst });
+            using var connection = getConnection();
+            var title = connection.Query<Title, principals, Title>(sql, map: (Title, principals) =>
+            {
+                Title.tconst = principals.tconst;
+                return Title;
+            }, splitOn: "tconst", param: new { Nconst = Nconst });
 
-        return title;
+            return title;
+        
     }
 }

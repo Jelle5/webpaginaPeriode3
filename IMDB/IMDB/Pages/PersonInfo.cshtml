@@ -50,25 +50,9 @@
         <tbody>
         @foreach (var title in Model.Titles)
         {
-            <tr>
-        <td>@title.primary</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-<div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>jobs</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var jobs in Model.professions)
-        {
-            <tr>
-            <td>@jobs.Profession</td>
+            <tr> 
+                <td>@title.primary</td>
+                <td>@title.Principals.category</td>
             </tr>
         }
         </tbody>
