@@ -10,4 +10,5 @@ public class individual
     
     public int deathyear { get; set; }
     
+    public principals Principals { get; set; }
 }

@@ -20,4 +20,15 @@ public class akaRepo
 
         return aka;
     }
+    
+    public IEnumerable<aka> getByTconst(string Tconst)
+    {
+        string sql = @"SELECT a.* FROM aka a 
+                        INNER JOIN akas aa on a.aconst = aa.aconst 
+                        WHERE aa.tconst = @Tconst";
+        using var connection = getConnection();
+        var aka = connection.Query<aka>(sql, new{Tconst = Tconst});
+
+        return aka;
+    }
 }

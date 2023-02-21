@@ -10,7 +10,11 @@ public class Test : PageModel
     public IEnumerable<Title> title { get; set; }
 
     public IEnumerable<individual> individuals {get; set;}
+    
+    public IEnumerable<aka> Akas { get; set; }
 
+    public IEnumerable<company> Companies { get; set; }
+    
     public string Tconsts;
     public string tname;
     public void OnGet(string tconst)
@@ -18,6 +22,8 @@ public class Test : PageModel
         Tconsts = tconst;
         title = new TitleRepo().getTitle(tconst);
         individuals = new individualRepo().getByTconst(tconst);
+        Akas = new akaRepo().getByTconst(tconst);
+        Companies = new companyRepo().getByTconst(tconst);
         foreach (var titles in title)
         {
             tname = titles.primary;

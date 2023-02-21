@@ -56,6 +56,7 @@
         <thead>
         <tr>
             <th>PrimaryName</th>
+            <th>role</th>
             <th>birthYear</th>
             <th>deathYear</th>
 
@@ -68,8 +69,47 @@
                 <td>
                     <a href="/PersonInfo?nconst=@individual.nconst">@individual.primary</a>
                 </td>
+                <td>@individual.Principals.category</td>
                 <td>@individual.birthyear</td>
                 <td>@individual.deathyear</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Alternative Title</th>
+            <th>Language</th>
+            <th>Region</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var aka in Model.Akas)
+        {
+            <tr>
+                <td>@aka.title</td>
+                <td>@aka.language</td>
+                <td>@aka.region</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>company</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var company in Model.Companies)
+        {
+            <tr>
+                <td>@company.name</td>
             </tr>
         }
         </tbody>

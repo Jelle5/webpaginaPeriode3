@@ -35,17 +35,16 @@ public class TitleRepo
 
     public IEnumerable<Title> getByNconst(string Nconst)
     {
-        
-            string sql = @"SELECT t.*, p.* FROM title t 
+        string sql = @"SELECT t.*, p.* FROM title t 
                         INNER JOIN principals p on t.tconst = p.tconst
                         WHERE Nconst = @Nconst";
 
             using var connection = getConnection();
-            var title = connection.Query<Title, principals, Title>(sql, map: (Title, principals) =>
+            var title = connection.Query<Title, principals, Title>(sql, map: (t, p) =>
             {
-                Title.tconst = principals.tconst;
-                return Title;
-            }, splitOn: "tconst", param: new { Nconst = Nconst });
+                t.Principals = p;
+                return t;
+            }, splitOn:"nconst", param: new { Nconst = Nconst });
 
             return title;
         

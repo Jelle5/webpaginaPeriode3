@@ -12,7 +12,4 @@ public class aka
     
     public int isOrigninalTitle { get; set; }
     
-    public string attribute { get; set; }
-    
-    public string type { get; set; }
 }

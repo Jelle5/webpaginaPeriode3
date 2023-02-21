@@ -24,10 +24,14 @@ public class individualRepo
 
     public IEnumerable<individual> getByTconst(string Tconst)
     {
-        string sql = @"SELECT i.* FROM individual i inner join principals p on i.nconst = p.nconst
+        string sql = @"SELECT i.*, p.* FROM individual i inner join principals p on i.nconst = p.nconst
                         WHERE tconst = @Tconst";
         using var connection = getConnection();
-        var individual = connection.Query<individual>(sql, new{Tconst = Tconst});
+        var individual = connection.Query<individual, principals, individual>(sql,map:(i, p) =>
+        {
+            i.Principals = p;
+            return i;
+        }, splitOn:"nconst", param: new{Tconst = Tconst});
         return individual;
     }
     
@@ -39,5 +43,7 @@ public class individualRepo
         var individual = connection.Query<individual>(sql, new{Nconst = Nconst});
         return individual;
     }
+    
+    
 
 }
