@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 import itertools
 import psycopg2
+import re
 
 proxies = [
 'http://kvquxzla:lf9uk8xavtyr@185.199.229.156:7492'
@@ -22,7 +23,7 @@ proxy_pool = itertools.cycle(proxies)
 
 conn = psycopg2.connect(
     host = 'localhost',
-    dbname = 'Scraper',
+    dbname = 'imdb',
     user = 'Marten',
     password = '9624',
     port = 5432
@@ -38,24 +39,72 @@ def make_request(url):
     response = requests.get(url, headers=headers, proxies=proxies, timeout=5)
     return response.content
 
-def demographics(thistconst):
-    url = "https://www.imdb.com/title/" + thistconst + "/ratings/"
-    response = make_request(url)
-    soup = BeautifulSoup(response, 'html5lib')
+def person(osup, thisnconst):
+    person = {}
 
-    table = soup.findAll('table')[1]
+    person["tconst"] = thisnconst
 
-    print(table.prettify())
+    awards = soup.find('li', attrs={'data-testid':'award_information'})
+    person["primaryAward"] = awards.find('a').text.strip()
+    print(person["primaryAward"])
+
+    subAward = awards.find('div').find('label').text.strip()
+
+    wins_pattern = r"\d+(?=\s+wins)"
+    wins_match = re.search(wins_pattern, subAward)
+    wins = ''
+    if wins_match:
+        wins = wins_match.group()
+
+    nominations_pattern = r"\d+(?=\s+nominations?)"
+    nominations_match = re.search(nominations_pattern, subAward)
+    nominations = ''
+    if nominations_match:
+        nominations = nominations_match.group()
+
+    person["nrWins"] = wins
+    person["nrNominations"] = nominations
+
+    print(person["nrWins"])
+    print(person["nrNominations"])
 
     conn.commit()
 
-file = open('Trial.txt')
+file = open('Person.txt')
 lines = file.read().splitlines()
 file.close()
 
 for line in lines:
+    cur.execute("SELECT nconst FROM individual WHERE nconst=%s", (line,))
+    '''
+        if cur.fetchone() is not None:
+        # line already exists in database, skip to next line
+        print(cur.fetchone())
+        continue
+    '''
+
     print(line)
-    demographics(line)
+
+    url = "https://www.imdb.com/name/" + line
+    proxy = next(proxy_pool)
+    proxies = {'http': proxy}
+    try:
+        response = requests.get(url, headers=headers, proxies=proxies, timeout=5)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html5lib')
+        person(soup, line)
+    except requests.exceptions.ReadTimeout as e:
+        file = open('errors.txt', 'a')
+        file.write('\n')
+        file.write(line)
+        file.close()
+    except requests.exceptions.RequestException as e:
+        file = open('othererrors.txt', 'a')
+        file.write('\n')
+        file.write(line)
+        file.close()
+
+
 
 cur.close()
 conn.close()
