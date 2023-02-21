@@ -1,11 +1,27 @@
 from bs4 import BeautifulSoup
 import requests
+import itertools
 import psycopg2
 import re
 
+proxies = [
+'http://kvquxzla:lf9uk8xavtyr@185.199.229.156:7492'
+'http://kvquxzla:lf9uk8xavtyr@185.199.228.220:7300'
+'http://kvquxzla:lf9uk8xavtyr@185.199.231.45:8382'
+'http://kvquxzla:lf9uk8xavtyr@188.74.210.207:6286'
+'http://kvquxzla:lf9uk8xavtyr@188.74.183.10:8279'
+'http://kvquxzla:lf9uk8xavtyr@188.74.210.21:6100'
+'http://kvquxzla:lf9uk8xavtyr@45.155.68.129:8133'
+'http://kvquxzla:lf9uk8xavtyr@154.95.36.199:6893'
+'http://kvquxzla:lf9uk8xavtyr@45.94.47.66:8110'
+'http://kvquxzla:lf9uk8xavtyr@144.168.217.88:8780'
+]
+
+proxy_pool = itertools.cycle(proxies)
+
 conn = psycopg2.connect(
     host = 'localhost',
-    dbname = 'Scraper',
+    dbname = 'imdb',
     user = 'Marten',
     password = '9624',
     port = 5432
@@ -14,6 +30,21 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 headers = {'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0"}
+
+def make_request(url):
+    proxy = next(proxy_pool)
+    proxies = {'http': proxy}
+    try:
+        response = requests.get(url, headers=headers, proxies=proxies, timeout=5)
+        response.raise_for_status()
+        return response.content
+    except requests.exceptions.ReadTimeout as e:
+        file = open('errors.txt', 'w')
+        file.write(str(url))
+    except requests.exceptions.RequestException as e:
+        file = open('errors.txt', 'w')
+        file.write(str(url))
+
 def query(movie):
 
     #insert into movie
@@ -23,7 +54,7 @@ def query(movie):
     cur.execute(sql_movie, (movie["tconst"],movie["budget"],movie["grossdomestic"],movie["grossworldwide"],movie["openingweekend"],movie["certificate"],movie["origin"],movie["filmingcountry"],movie["aspectratio"]))
 
     #insert sites
-    for i in range(3):
+    for i in range(10):
         if movie["site" + str(i)] == None:
             break
         sql_site = """
@@ -63,7 +94,7 @@ def query(movie):
         cur.execute(sql_sites, (movie["tconst"], sconst[0]))
 
     #insert into languages
-    for i in range(3):
+    for i in range(10):
         if movie["language" + str(i)] == None:
             break
         sql_language = """
@@ -104,7 +135,7 @@ def query(movie):
         cur.execute(sql_languages, (movie["tconst"], lconst[0]))
 
     #insert into colors
-    for i in range(3):
+    for i in range(10):
         if movie["color" + str(i)] == None:
             break
         sql_color = """
@@ -145,7 +176,7 @@ def query(movie):
         cur.execute(sql_colors, (movie["tconst"], cconst[0]))
 
     #insert into soundmixes
-    for i in range(3):
+    for i in range(10):
         if movie["soundmix" + str(i)] == None:
             break
         sql_soundmix = """
@@ -186,7 +217,7 @@ def query(movie):
         cur.execute(sql_soundmixes, (movie["tconst"], soconst[0]))
 
     #insert into companies
-    for i in range(3):
+    for i in range(10):
         if movie["company" + str(i)] == None:
             break
         sql_company = """
@@ -227,10 +258,7 @@ def query(movie):
         cur.execute(sql_companies, (movie["tconst"], coconst[0]))
     conn.commit()
 
-def movies(thistconst):
-    url = "https://www.imdb.com/title/" + thistconst
-    response = requests.get(url, headers=headers, timeout=5)
-    soup = BeautifulSoup(response.content, 'html5lib')
+def movies(soup, thistconst):
 
     movie = {}
 
@@ -251,7 +279,12 @@ def movies(thistconst):
 
     grossdomestic = soup.find('li', attrs={'data-testid': 'title-boxoffice-grossdomestic'})
     if grossdomestic is not None:
-        movie["grossdomestic"] = grossdomestic.find('label').text[1:].replace(',','').strip()
+        domestic_text = grossdomestic.find('label').text.strip()
+        match = re.search(budget_pattern, domestic_text)
+        if match:
+            movie["grossdomestic"] = int(match.group(1).replace(',', ''))
+        else:
+            movie["grossdomestic"] = None
     else:
         grossdomestic = None
         movie["grossdomestic"] = grossdomestic
@@ -287,7 +320,7 @@ def movies(thistconst):
     sites = soup.find('li', attrs={'data-testid':'details-officialsites'})
     if sites is not None:
         sites = sites.findAll('li')
-        for i in range(3):
+        for i in range(10):
             if i < len(sites):
                 movie["site" + str(i)] = sites[i].find('a').text.strip()
                 movie["link" + str(i)] = sites[i].find('a').get('href')
@@ -305,7 +338,7 @@ def movies(thistconst):
     languages = soup.find('li', attrs={'data-testid': 'title-details-languages'})
     if languages is not None:
         languages = languages.findAll('li')
-        for i in range(3):
+        for i in range(10):
             if i < len(languages):
                 movie["language" + str(i)] = languages[i].find('a').text.strip()
             else:
@@ -330,7 +363,7 @@ def movies(thistconst):
     companies = soup.find('li', attrs={'data-testid': 'title-details-companies'})
     if companies is not None:
         companies = companies.findAll('li')
-        for i in range(3):
+        for i in range(10):
             if i < len(companies):
                 movie["company" + str(i)] = companies[i].find('a').text.strip()
             else:
@@ -343,7 +376,7 @@ def movies(thistconst):
     colors = soup.find('li', attrs={'data-testid': 'title-techspec_color'})
     if colors is not None:
         colors = colors.findAll('li')
-        for i in range(3):
+        for i in range(10):
             if i < len(colors):
                 movie["color" + str(i)] = colors[i].find('a').text.strip()
             else:
@@ -356,7 +389,7 @@ def movies(thistconst):
     soundmixes = soup.find('li', attrs={'data-testid': 'title-techspec_soundmix'})
     if soundmixes is not None:
         soundmixes = soundmixes.findAll('li')
-        for i in range(3):
+        for i in range(10):
             if i < len(soundmixes):
                 movie["soundmix" + str(i)] = soundmixes[i].find('a').text.strip()
             else:
@@ -366,23 +399,51 @@ def movies(thistconst):
         movie["soundmix1"] = None
         movie["soundmix2"] = None
 
+    aspect_pattern = r'\d+\.\d+:\d+'  # pattern for aspect ratio (e.g. 1.85:1)
+
     aspect = soup.find('li', attrs={'data-testid': 'title-techspec_aspectratio'})
     if aspect is not None:
-        movie["aspectratio"] = aspect.find('label').text.replace(' ','').strip()
+        aspect_text = aspect.find('label').text.replace(' ', '').strip()
+        aspect_ratio = re.search(aspect_pattern, aspect_text)
+        if aspect_ratio:
+            movie["aspectratio"] = aspect_ratio.group()
+        else:
+            movie["aspectratio"] = None
     else:
-        aspect = None
-        movie["aspectratio"] = aspect
+        movie["aspectratio"] = None
 
     query(movie)
 
-
-file = open('Trial.txt')
+file = open('allmoviesandseries.txt')
 lines = file.read().splitlines()
 file.close()
 
 for line in lines:
+    cur.execute("SELECT tconst FROM title WHERE tconst=%s", (line,))
+    if cur.fetchone() is not None:
+        # line already exists in database, skip to next line
+        continue
+
+    url = "https://www.imdb.com/title/" + line
+    proxy = next(proxy_pool)
+    proxies = {'http': proxy}
+    try:
+        response = requests.get(url, headers=headers, proxies=proxies, timeout=5)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html5lib')
+        movies(soup, line)
+    except requests.exceptions.ReadTimeout as e:
+        file = open('errors.txt', 'a')
+        file.write('\n')
+        file.write(line)
+        file.close()
+    except requests.exceptions.RequestException as e:
+        file = open('othererrors.txt', 'a')
+        file.write('\n')
+        file.write(line)
+        file.close()
+
     print(line)
-    movies(line)
 
 cur.close()
 conn.close()
