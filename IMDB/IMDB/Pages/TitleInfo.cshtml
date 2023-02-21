@@ -1,5 +1,6 @@
 @page
 @using WebApplication2.Pages.Database.model
+@using System.Globalization
 @model WebApplication2.Pages.Test
 
 @{
@@ -17,43 +18,121 @@
 <body>
 <div>
     <h1>@Model.tname</h1>
-    <a href="https://imdb.com/title/@Model.Tconsts">imdb</a>
+    <a href="https://imdb.com/title/@Model.Tconsts">
+        imdb
+    </a>
     <a href="https://imdb.com/title/@Model.Tconsts/fullcredits">credits</a>
 </div>
+<!--Primary-->
 <div>
     <table class="table">
-        <thead>
+        <thead class="thead-dark">
         <tr>
             <th>Type</th>
-            <th>is adult</th>
-            <th>start year</th>
-            <th>end year</th>
-            <th>Duration minutes</th>
-            <th>average rating</th>
-            <th>number of votes</th>
-            <th>season number</th>
-            <th>episode number</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var title in Model.title)
         {
             <td>@title.type</td>
-            <td>@title.isadult</td>
-            <td>@title.startyear</td>
-            <td>@title.endyear</td>
-            <td>@title.runtimemin</td>
-            <td>@title.averagerating</td>
-            <td>@title.numvotes</td>
-            <td>@title.seasonnr</td>
-            <td>@title.episodenr</td>
         }
         </tbody>
     </table>
 </div>
+<!--Details-->
 <div>
     <table class="table table-hover">
-        <thead>
+        <thead class="thead-dark">
+        <tr>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var title in Model.title)
+        {
+            <tr>
+             <td>
+                 <p>Adult: @title.isadult.ToString().ToLower()</p> 
+             </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>@title.startyear - @title.endyear</p> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Duration: @TimeSpan.FromMinutes(@title.runtimemin).ToString()</p> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>S @title.seasonnr . @title.episodenr</p> 
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div> 
+<!--Rating-->
+<div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Rating</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var title in Model.title)
+        {
+            <tr>
+                <td>
+                    <p>@title.averagerating / @title.numvotes</p> 
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div> 
+<!--BoxOffice-->
+<div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Rating</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var title in Model.title)
+        {
+            <tr>
+                <td>
+                    <p>budget: @title.budget.ToString("D") (@title.origin)</p> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>gross domestic: @title.gross_domestic.ToString("C3", CultureInfo.CreateSpecificCulture("en-US"))</p> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>gross worldwide: @title.gross_worldwide.ToString("C3", CultureInfo.CreateSpecificCulture("en-US"))</p> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>opening weekend @title.opening_weekend.ToString("C3", CultureInfo.CreateSpecificCulture("en-US"))</p> 
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div> 
+<!--Principals-->
+<div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
         <tr>
             <th>PrimaryName</th>
             <th>role</th>
@@ -77,9 +156,10 @@
         </tbody>
     </table>
 </div>
+<!--Akas-->
 <div>
     <table class="table table-hover">
-        <thead>
+        <thead class="thead-dark">
         <tr>
             <th>Alternative Title</th>
             <th>Language</th>
@@ -98,9 +178,10 @@
         </tbody>
     </table>
 </div>
+<!--Companies-->
 <div>
     <table class="table table-hover">
-        <thead>
+        <thead class="thead-dark">
         <tr>
             <th>company</th>
         </tr>
@@ -114,6 +195,6 @@
         }
         </tbody>
     </table>
-</div>
+</div> 
 </body>
 </html>
