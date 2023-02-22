@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApplication2.Pages.Database.model;
 using WebApplication2.Pages.Database.repository;
@@ -15,4 +16,12 @@ public class DashBoard : PageModel
     {
         titles = new TitleRepo().getAll();
     }
+
+    public IActionResult OnPostFilter([FromForm] string type, [FromForm] string isAdult, [FromForm] string startyear, [FromForm] string endyear, [FromForm] string runtimeMinutes, [FromForm] string averageRating, [FromForm] string numVotes, [FromForm] string seasonnr, [FromForm] string episodenr)
+    {
+        
+        
+        return RedirectToPage("/TitleInfo");
+    }
+
 }

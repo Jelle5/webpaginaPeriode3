@@ -38,9 +38,11 @@
             <th>season number</th>
             <th>episode number</th>
             <th>
+
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                     filters
                 </button>
+
             </th>
         </tr>
         </thead>
@@ -76,98 +78,103 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <form method="post" asp-page-handler="Filter">
+                <div class="modal-body">
 
-                <div>
-                    <label>Type</label>
-                    <select name="type" id="type">
-                        <option value="volvo">film</option>
-                        <option value="saab">game</option>
-                        <option value="saab">docu</option>
-                        <option value="saab">otto</option>
-                        <option value="saab">jan</option>
-                        <option value="saab">foeke</option>
-                    </select>
+                    <div>
+                        <label>Type</label>
+                        <select name="type" id="type">
+                            <option value="film">film</option>
+                            <option value="game">game</option>
+                            <option value="docu">docu</option>
+                            <option value="otto">otto</option>
+                            <option value="jan">jan</option>
+                            <option value="foeke">foeke</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Ook 18+ films laten zien?</label>
+                        <select name="isAdult" id="isAdult">
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Start year</label>
+                        <select name="=1" id="=1">
+                            <option value="volvo">=</option>
+                            <option value="saab">></option>
+                            <option value="saab"><</option>
+                        </select>
+                        <input id="startyear" name="startyear" placeholder="start year" style="width: 100px"/>
+                    </div>
+
+                    <div>
+                        <label>end year</label>
+                        <select name="=2" id="=2">
+                            <option value="volvo">=</option>
+                            <option value="saab">></option>
+                            <option value="saab"><</option>
+                        </select>
+                        <input id="endyear" name="endyear" placeholder="end year" style="width: 100px"/>
+                    </div>
+
+                    <div>
+                        <label>num minutes</label>
+                        <select name="=3" id="=3">
+                            <option value="volvo">=</option>
+                            <option value="saab">></option>
+                            <option value="saab"><</option>
+                        </select>
+                        <input name="runtimeMinutes" placeholder="num minutes" style="width: 100px"/>
+                    </div>
+
+                    <div>
+                        <label>average rating</label>
+                        <select name="=4" id="=4">
+                            <option value="volvo">=</option>
+                            <option value="saab">></option>
+                            <option value="saab"><</option>
+                        </select>
+                        <input name="averageRating" placeholder="avg rating" style="width: 100px"/>
+                    </div>
+
+                    <div>
+                        <label>number of votes</label>
+                        <select name="=5" id="=5">
+                            <option value="volvo">=</option>
+                            <option value="saab">></option>
+                            <option value="saab"><</option>
+                        </select>
+                        <input name="numVotes" placeholder="num votes" style="width: 100px"/>
+                    </div>
+
+                    <div>
+                        <label>number of seasons</label>
+                        <select name="=6" id="=6">
+                            <option value="volvo">=</option>
+                            <option value="saab">></option>
+                            <option value="saab"><</option>
+                        </select>
+                        <input name="seasonnr" placeholder="season number" style="width: 100px"/>
+                    </div>
+
+                    <div>
+                        <label>episode number</label>
+                        <input name="episodenr" placeholder="episode number" style="width: 100px"/>
+                    </div>
+
                 </div>
-                <div>
-                    <label>Ook 18+ films laten zien?</label>
-                    <select name="isAdult" id="isAdult">
-                        <option value="true">true</option>
-                        <option value="false">false</option>
-                    </select>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+                    <button class="btn btn-primary">Save changes</button>
+
                 </div>
-
-                <div>
-                    <label>Start year</label>
-                    <select name="=1" id="=1">
-                        <option value="volvo">=</option>
-                        <option value="saab">></option>
-                        <option value="saab"><</option>
-                    </select>
-                    <input placeholder="start year" style="width: 100px"/>
-                </div>
-
-                <div>
-                    <label>end year</label>
-                    <select name="=2" id="=2">
-                        <option value="volvo">=</option>
-                        <option value="saab">></option>
-                        <option value="saab"><</option>
-                    </select>
-                    <input placeholder="end year" style="width: 100px"/>
-                </div>
-
-                <div>
-                    <label>num minutes</label>
-                    <select name="=3" id="=3">
-                        <option value="volvo">=</option>
-                        <option value="saab">></option>
-                        <option value="saab"><</option>
-                    </select>
-                    <input placeholder="num minutes" style="width: 100px"/>
-                </div>
-
-                <div>
-                    <label>average rating</label>
-                    <select name="=4" id="=4">
-                        <option value="volvo">=</option>
-                        <option value="saab">></option>
-                        <option value="saab"><</option>
-                    </select>
-                    <input placeholder="avg rating" style="width: 100px"/>
-                </div>
-
-                <div>
-                    <label>number of votes</label>
-                    <select name="=5" id="=5">
-                        <option value="volvo">=</option>
-                        <option value="saab">></option>
-                        <option value="saab"><</option>
-                    </select>
-                    <input placeholder="num votes" style="width: 100px"/>
-                </div>
-
-                <div>
-                    <label>number of seasons</label>
-                    <select name="=6" id="=6">
-                        <option value="volvo">=</option>
-                        <option value="saab">></option>
-                        <option value="saab"><</option>
-                    </select>
-                    <input placeholder="season number" style="width: 100px"/>
-                </div>
-
-                <div>
-                    <label>episode number</label>
-                    <input placeholder="episode number" style="width: 100px"/>
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
