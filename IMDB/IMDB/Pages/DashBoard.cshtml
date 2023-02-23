@@ -83,7 +83,7 @@
 
                     <div>
                         <label>Type</label>
-                        <select name="type" id="type">
+                        <select name="type" id="type" asp-for="settings.type">
                             <option value="film">film</option>
                             <option value="game">game</option>
                             <option value="docu">docu</option>
@@ -94,7 +94,7 @@
                     </div>
                     <div>
                         <label>Ook 18+ films laten zien?</label>
-                        <select name="isAdult" id="isAdult">
+                        <select name="isAdult" id="isAdult" asp-for="settings.isAdult">
                             <option value="true">true</option>
                             <option value="false">false</option>
                         </select>
@@ -102,67 +102,67 @@
 
                     <div>
                         <label>Start year</label>
-                        <select name="is1" id="=1">
+                        <select name="isstart" id="=1" asp-for="settings.isstart">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input id="startyear" name="startyear" placeholder="start year" style="width: 100px"/>
+                        <input id="startyear" name="startyear" placeholder="start year" style="width: 100px" asp-for="settings.startyear"/>
                     </div>
 
                     <div>
                         <label>end year</label>
-                        <select name="is2" id="=2">
+                        <select name="isend" id="=2" asp-for="settings.isend">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input id="endyear" name="endyear" placeholder="end year" style="width: 100px"/>
+                        <input id="endyear" name="endyear" placeholder="end year" style="width: 100px" asp-for="settings.endyear"/>
                     </div>
 
                     <div>
                         <label>num minutes</label>
-                        <select name="is3" id="=3">
+                        <select name="isruntime" id="=3" asp-for="settings.runtimeMinutes">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input name="runtimeMinutes" placeholder="num minutes" style="width: 100px"/>
+                        <input name="runtimeMinutes" placeholder="num minutes" style="width: 100px" asp-for="settings.isruntime"/>
                     </div>
 
                     <div>
                         <label>average rating</label>
-                        <select name="is4" id="=4">
+                        <select name="isavg" id="=4" asp-for="settings.isavg">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input name="averageRating" placeholder="avg rating" style="width: 100px"/>
+                        <input name="averageRating" placeholder="avg rating" style="width: 100px" asp-for="settings.averageRating"/>
                     </div>
 
                     <div>
                         <label>number of votes</label>
-                        <select name="is5" id="=5">
+                        <select name="isnum" id="=5" asp-for="settings.isnum">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input name="numVotes" placeholder="num votes" style="width: 100px"/>
+                        <input name="numVotes" placeholder="num votes" style="width: 100px" asp-for="settings.numVotes"/>
                     </div>
 
                     <div>
                         <label>number of seasons</label>
-                        <select name="is6" id="=6">
+                        <select name="isseason" id="=6" asp-for="settings.isseason">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input name="seasonnr" placeholder="season number" style="width: 100px"/>
+                        <input name="seasonnr" placeholder="season number" style="width: 100px" asp-for="settings.seasonnr"/>
                     </div>
 
                     <div>
                         <label>episode number</label>
-                        <input name="episodenr" placeholder="episode number" style="width: 100px"/>
+                        <input name="episodenr" placeholder="episode number" style="width: 100px" asp-for="settings.episodenr"/>
                     </div>
 
                 </div>

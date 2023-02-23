@@ -49,4 +49,60 @@ public class TitleRepo
             return title;
         
     }
+    
+    public IEnumerable<Title> settings(Settings settings)
+    {
+         string typeR;
+         string isAdultR;
+         string isstartR;
+         int startyearR;
+         string isendR;
+         int endyearR;
+         string isruntimeR;
+         int runtimeMinutesR;
+         string isavgR;
+         double averageRatingR;
+         string isnumR;
+         int numVotesR;
+         string isseasonR;
+         int seasonnrR;
+         int episodenrR;
+        
+        
+        if (settings.startyear != null)
+        {
+            
+        }
+        
+        if (settings.startyear != null)
+        {
+            
+        }
+        
+        if (settings.startyear != null)
+        {
+            
+        }
+        
+        if (settings.startyear != null)
+        {
+            
+        }
+        
+        if (settings.startyear != null)
+        {
+            
+        }
+        
+        if (settings.startyear != null)
+        {
+            
+        }
+        string sql = @"SELECT * FROM Title WHERE ";
+
+        using var connection = getConnection();
+        var title = connection.Query<Title>(sql);
+
+        return title;
+    }
 }
