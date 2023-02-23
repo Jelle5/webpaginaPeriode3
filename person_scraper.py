@@ -44,33 +44,60 @@ def person(osup, thisnconst):
 
     person["tconst"] = thisnconst
 
-    awards = soup.find('li', attrs={'data-testid':'award_information'})
-    person["primaryAward"] = awards.find('a').text.strip()
-    print(person["primaryAward"])
+    if soup.find('li', attrs={'data-testid':'award_information'}) is not None:
+        awards = soup.find('li', attrs={'data-testid':'award_information'})
+        person["primaryAward"] = awards.find('a').text.strip()
+        print(person["primaryAward"])
 
-    subAward = awards.find('div').find('label').text.strip()
+        subAward = awards.find('div').find('label').text.strip()
 
-    wins_pattern = r"\d+(?=\s+wins)"
-    wins_match = re.search(wins_pattern, subAward)
-    wins = ''
-    if wins_match:
-        wins = wins_match.group()
+        wins_pattern = r"\d+(?=\s+wins)"
+        wins_match = re.search(wins_pattern, subAward)
+        wins = ''
+        if wins_match:
+            wins = wins_match.group()
 
-    nominations_pattern = r"\d+(?=\s+nominations?)"
-    nominations_match = re.search(nominations_pattern, subAward)
-    nominations = ''
-    if nominations_match:
-        nominations = nominations_match.group()
+        nominations_pattern = r"\d+(?=\s+nominations?)"
+        nominations_match = re.search(nominations_pattern, subAward)
+        nominations = ''
+        if nominations_match:
+            nominations = nominations_match.group()
 
-    person["nrWins"] = wins
-    person["nrNominations"] = nominations
+        person["nrWins"] = wins
+        person["nrNominations"] = nominations
+    else:
+        person["primaryAward"] = None
+        person["nrWins"] = None
+        person["nrNominations"] = None
 
-    print(person["nrWins"])
-    print(person["nrNominations"])
+    sites = soup.find('li', attrs={'data-testid': 'details-officialsites'})
+    if sites is not None:
+        sites = sites.findAll('li')
+        for i in range(10):
+            if i < len(sites):
+                person["site" + str(i)] = sites[i].find('a').text.strip()
+                person["link" + str(i)] = sites[i].find('a').get('href')
+            else:
+                person["site" + str(i)] = None
+                person["link" + str(i)] = None
+    else:
+        person["site0"] = None
+        person["site1"] = None
+        person["site2"] = None
+        person["link0"] = None
+        person["link1"] = None
+        person["link2"] = None
+
+    if soup.find('li', attrs={'data-testid':'nm_pd_he'}) is not None:
+        person["height"] = soup.find('li', attrs={'data-testid':'nm_pd_he'}).find('label').text.replace('m','').replace('.','').strip()
+    else:
+        person["height"] = None
+
+    print(person)
 
     conn.commit()
 
-file = open('Person.txt')
+file = open('Persons.txt')
 lines = file.read().splitlines()
 file.close()
 
