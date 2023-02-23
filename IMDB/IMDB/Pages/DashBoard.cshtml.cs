@@ -17,11 +17,14 @@ public class DashBoard : PageModel
         titles = new TitleRepo().getAll();
     }
 
-    public IActionResult OnPostFilter([FromForm] string type, [FromForm] string isAdult, [FromForm] string startyear, [FromForm] string endyear, [FromForm] string runtimeMinutes, [FromForm] string averageRating, [FromForm] string numVotes, [FromForm] string seasonnr, [FromForm] string episodenr)
+    public IActionResult OnPostFilter([FromForm] string type, [FromForm] string isAdult, [FromForm] string is1, [FromForm] string startyear, 
+        [FromForm] string is2, [FromForm] string endyear, [FromForm] string is3, [FromForm] string runtimeMinutes, 
+        [FromForm] string is4, [FromForm] string averageRating, [FromForm] string is5, [FromForm] string numVotes, 
+        [FromForm] string is6, [FromForm] string seasonnr, [FromForm] string episodenr)
     {
         
         
-        return RedirectToPage("/TitleInfo");
+        return RedirectToPage("/DashBoard");
     }
 
 }
