@@ -84,6 +84,7 @@
                     <div>
                         <label>Type</label>
                         <select name="type" id="type" asp-for="settings.type">
+                            <option value="empty">empty</option>
                             <option value="film">film</option>
                             <option value="game">game</option>
                             <option value="docu">docu</option>
@@ -97,6 +98,7 @@
                         <select name="isAdult" id="isAdult" asp-for="settings.isAdult">
                             <option value="true">true</option>
                             <option value="false">false</option>
+                            <option value="all">all</option>
                         </select>
                     </div>
 

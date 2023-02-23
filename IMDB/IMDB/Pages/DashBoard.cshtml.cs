@@ -16,9 +16,9 @@ public class DashBoard : PageModel
     public IEnumerable<Title> titles { get; set; }
 
     public Title title;
-    public IActionResult OnGet()
+    public IActionResult OnGet(bool joe)
     {
-
+    
         //Vraagt de settings cookie hier op.
         settings = new Settings();
         string settingsStr = Request.Cookies["settings"];
@@ -32,12 +32,17 @@ public class DashBoard : PageModel
             titles = new TitleRepo().getAll();
         }
 
-        else
+        else if(joe)
         {
             settings = JsonConvert.DeserializeObject<Settings>(settingsStr);
             titles = new TitleRepo().settings(settings);
         }
-        
+
+        else
+        {
+            titles = new TitleRepo().getAll();
+        }
+
         return Page();
     }
 
@@ -49,9 +54,9 @@ public class DashBoard : PageModel
         string json;
         json = JsonConvert.SerializeObject(settings);
         Response.Cookies.Append("settings", json.ToString());
-        
-        
-        return RedirectToPage("/DashBoard");
+
+        bool joe;
+        return RedirectToPage("/DashBoard", new { joe = true });
     }
 
 }
