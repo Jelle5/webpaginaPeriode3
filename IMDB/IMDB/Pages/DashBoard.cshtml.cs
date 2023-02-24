@@ -20,29 +20,24 @@ public class DashBoard : PageModel
     public Title title;
     public IActionResult OnGet()
     {
-        var cookieOptions = new CookieOptions
-        {};
-        
+    
         //Vraagt de settings cookie hier op.
-         
-         string settingsStr = Request.Cookies["settings"];
-         settings = new Settings();
-         
-         if (settingsStr == null)
-         {
-             string json;
-             json = JsonConvert.SerializeObject(settings);
-             Response.Cookies.Append("settings", json.ToString(), new CookieOptions()
-             {
-                 Expires = DateTimeOffset.Now.AddDays(30)
-             }); 
-             titles = new TitleRepo().getAll();
-         }
-         else
-         {
-             settings = JsonConvert.DeserializeObject<Settings>(settingsStr);
-             titles = new TitleRepo().settings(settings);
-         }
+        settings = new Settings();
+        string settingsStr = Request.Cookies["settings"];
+        
+        if (settingsStr == null)
+        {
+            Response.Cookies.Append("settings", settings.ToString(), new CookieOptions()
+            {
+                Expires = DateTimeOffset.Now.AddDays(30)
+            }); 
+            titles = new TitleRepo().getAll();
+        }
+        else
+        {
+            settings = JsonConvert.DeserializeObject<Settings>(settingsStr);
+            titles = new TitleRepo().settings(settings);
+        }
 
         types = new TitleRepo().getAllType();
         return Page();
@@ -58,15 +53,4 @@ public class DashBoard : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostClear()
-    {
-        settings = new Settings();
-        string json;
-        json = JsonConvert.SerializeObject(settings);
-        
-        //Response.Cookies.Delete("settings");
-        Response.Cookies.Append("settings", json.ToString());
-
-        return RedirectToPage();
-    }
 }

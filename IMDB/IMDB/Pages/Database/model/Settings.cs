@@ -13,7 +13,7 @@ public class Settings
      [StringLength(1)] public string isruntime { get; set; }   = "";
      public int runtimeMinutes { get; set; }  = 0;
      [StringLength(1)] public string isavg { get; set; } = "";
-     public double averagerating { get; set; }   = 0;
+     public double averagerating { get; set; }   = 0.0;
      [StringLength(1)] public string isnum { get; set; }   = "";
      public int numVotes { get; set; }  = 0;
      [StringLength(1)] public string isseason { get; set; }  = "";
