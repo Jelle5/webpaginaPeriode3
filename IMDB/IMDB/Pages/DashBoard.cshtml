@@ -84,17 +84,15 @@
                     <div>
                         <label>Type</label>
                         <select name="type" id="type" asp-for="settings.type">
-                            <option value="empty">empty</option>
-                            <option value="film">film</option>
-                            <option value="game">game</option>
-                            <option value="docu">docu</option>
-                            <option value="otto">otto</option>
-                            <option value="jan">jan</option>
-                            <option value="foeke">foeke</option>
+                            <option value="empty">empty</option>   
+                            @foreach (var type in Model.types)
+                            {
+                                <option value="@type.type">@type.type</option>
+                            }
                         </select>
                     </div>
                     <div>
-                        <label>Ook 18+ films laten zien?</label>
+                        <label>18+ </label>
                         <select name="isAdult" id="isAdult" asp-for="settings.isAdult">
                             <option value="true">true</option>
                             <option value="false">false</option>
@@ -124,12 +122,12 @@
 
                     <div>
                         <label>num minutes</label>
-                        <select name="isruntime" id="=3" asp-for="settings.runtimeMinutes">
+                        <select name="isruntime" id="=3" asp-for="settings.isruntime">
                             <option value="=">=</option>
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input name="runtimeMinutes" placeholder="num minutes" style="width: 100px" asp-for="settings.isruntime"/>
+                        <input name="runtimeMinutes" placeholder="num minutes" style="width: 100px" asp-for="settings.runtimeMinutes"/>
                     </div>
 
                     <div>
@@ -139,7 +137,7 @@
                             <option value=">">></option>
                             <option value="<"><</option>
                         </select>
-                        <input name="averageRating" placeholder="avg rating" style="width: 100px" asp-for="settings.averageRating"/>
+                        <input name="averageRating" placeholder="avg rating" style="width: 100px" asp-for="settings.averagerating"/>
                     </div>
 
                     <div>
@@ -166,12 +164,16 @@
                         <label>episode number</label>
                         <input name="episodenr" placeholder="episode number" style="width: 100px" asp-for="settings.episodenr"/>
                     </div>
+                    <div>
+                        <label>Aantal rows</label>
+                        <input name="Limit" placeholder="100" style="width: 100px" asp-for="settings.limit"/>
+                    </div>
 
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
+                    
 
                     <button class="btn btn-primary">Save changes</button>
 

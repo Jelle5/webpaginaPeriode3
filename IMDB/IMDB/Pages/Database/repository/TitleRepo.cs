@@ -50,59 +50,57 @@ public class TitleRepo
         
     }
     
+    public IEnumerable<Title> getAllType()
+    {
+        string sql = @"select DISTINCT(type) FROM title";
+
+        using var connection = getConnection();
+        var title = connection.Query<Title>(sql);
+
+        return title;
+        
+    }
+    
+    
     public IEnumerable<Title> settings(Settings settings)
     {
-         //string isAdultR;
-         //string isstartR;
-         string startyearR;
-         //string isendR;
-         int endyearR;
-         //string isruntimeR;
-         int runtimeMinutesR;
-         //string isavgR;
-         double averageRatingR;
-         //string isnumR;
-         int numVotesR;
-         //string isseasonR;
-         int seasonnrR;
-         int episodenrR;
-        
-         var sqlPredicates = new List<string>();
+        var sqlPredicates = new List<string>();
          var queryParams = new DynamicParameters();
-         
+
          if (settings.type != "empty")
          {
-             sqlPredicates.Add("averagerating = @param0");
+             sqlPredicates.Add("type = @param0");
              queryParams.Add("param0", settings.type, System.Data.DbType.String);
          }
          
         if (settings.startyear != 0)
         {
-            sqlPredicates.Add("startyear = @param1");
+            
+            sqlPredicates.Add("startyear " + settings.isstart + " @param1");
             queryParams.Add("param1", settings.startyear, System.Data.DbType.Int16);
         }
         
         if (settings.endyear != 0)
         {
-            sqlPredicates.Add("endyear = @param2");
+            sqlPredicates.Add("endyear " + settings.isend  + " @param2");
             queryParams.Add("param2", settings.endyear, System.Data.DbType.Int16);
         }
         
         if (settings.runtimeMinutes != 0)
         {
-            sqlPredicates.Add("runtimemin = @param3");
+            sqlPredicates.Add("runtimemin " + settings.isruntime + " @param3");
             queryParams.Add("param3", settings.runtimeMinutes, System.Data.DbType.Int16);
         }
         
-        if (settings.averageRating != 0)
+        if (settings.averagerating != 0)
         {
-            sqlPredicates.Add("averagerating = @param4");
-            queryParams.Add("param4", settings.averageRating, System.Data.DbType.Double);
+            sqlPredicates.Add("averagerating " + settings.isavg + " @param4");
+            queryParams.Add("param4", settings.averagerating, System.Data.DbType.Double);
         }
         
         if (settings.numVotes != 0)
         {
-            sqlPredicates.Add("numvotes = @param5");
+            sqlPredicates.Add("numvotes " + settings.isnum + " @param5");
             queryParams.Add("param5", settings.numVotes, System.Data.DbType.Int16);
         }
         
@@ -114,8 +112,16 @@ public class TitleRepo
         
         if (settings.seasonnr != 0)
         {
-            sqlPredicates.Add("seasonnr = @param7");
+            sqlPredicates.Add("seasonnr " + settings.isseason + " @param7");
             queryParams.Add("param7", settings.seasonnr, System.Data.DbType.Int16);
+        }
+        if (settings.limit != 0)
+        {
+            queryParams.Add("param8", settings.limit, System.Data.DbType.Int16);
+        }
+        else
+        {
+            queryParams.Add("param8", 100, System.Data.DbType.Int16);
         }
 
         
@@ -125,14 +131,15 @@ public class TitleRepo
         {
             if (sqlPredicates.ElementAt(0) == param)
             {
-                sql = sql + "WHERE " + param;
+                sql += "WHERE " + param;
             }
             else
             {
-                sql = sql + " AND " + param;
+                sql += " AND " + param;
             }
         }
-        
+
+        sql += " LIMIT @param8";
         using var connection = getConnection();
         var title = connection.Query<Title>(sql, queryParams);
 

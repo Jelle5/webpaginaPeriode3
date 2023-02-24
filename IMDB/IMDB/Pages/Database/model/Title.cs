@@ -26,7 +26,7 @@ public class Title
     
     public string parent { get; set; }
     
-    public int budget { get; set; }
+    public Int64 budget { get; set; }
     
     public int gross_domestic { get; set; }
     
