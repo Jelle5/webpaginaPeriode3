@@ -130,16 +130,12 @@ public class TitleRepo
         foreach (var param in sqlPredicates)
         {
             if (sqlPredicates.ElementAt(0) == param)
-            {
                 sql += "WHERE " + param;
-            }
             else
-            {
                 sql += " AND " + param;
-            }
         }
 
-        sql += " LIMIT @param8";
+        sql += " ORDER BY numvotes DESC LIMIT @param8";
         using var connection = getConnection();
         var title = connection.Query<Title>(sql, queryParams);
 

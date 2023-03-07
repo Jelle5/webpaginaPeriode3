@@ -6,9 +6,9 @@ public class individual
     
     public string primary { get; set; }
     
-    public int birthyear { get; set; }
+    public int? birthyear { get; set; }
     
-    public int deathyear { get; set; }
+    public int? deathyear { get; set; }
     
     public principals Principals { get; set; }
 }

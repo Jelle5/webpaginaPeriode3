@@ -17,6 +17,7 @@ public class Test : PageModel
     
     public string Tconsts;
     public string tname;
+    public string seasonepisode;
     public void OnGet(string tconst)
     {
         Tconsts = tconst;
@@ -24,9 +25,24 @@ public class Test : PageModel
         individuals = new individualRepo().getByTconst(tconst);
         Akas = new akaRepo().getByTconst(tconst);
         Companies = new companyRepo().getByTconst(tconst);
-        foreach (var titles in title)
+        foreach (var title in title)
         {
-            tname = titles.primary;
+            tname = title.primary;
+            seasonepisode = "S" + @title.seasonnr + "." + @title.episodenr;
+
+            if (title.startyear == 0)
+                title.startyear = null;
+            if (title.endyear == 0)
+                title.endyear = null;
         }
+
+        foreach (var individual in individuals)
+        {
+            if (individual.birthyear == 0)
+                individual.birthyear = null;
+            if (individual.deathyear == 0)
+                individual.deathyear = null;
+        }
+        
     }
 }

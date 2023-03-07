@@ -25,7 +25,8 @@ public class individualRepo
     public IEnumerable<individual> getByTconst(string Tconst)
     {
         string sql = @"SELECT i.*, p.* FROM individual i inner join principals p on i.nconst = p.nconst
-                        WHERE tconst = @Tconst";
+                        WHERE tconst = @Tconst
+                        ORDER BY i.primary";
         using var connection = getConnection();
         var individual = connection.Query<individual, principals, individual>(sql,map:(i, p) =>
         {
