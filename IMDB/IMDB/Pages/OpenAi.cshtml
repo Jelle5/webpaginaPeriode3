@@ -1,0 +1,27 @@
+﻿@page
+@model WebApplication2.Pages.OpenAi
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    <form method="post">
+        <div class="form-group">
+            <label for="query">Enter your query:</label>
+            <input type="text" name="query" id="query" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+    <p id="query"></p>
+</div>
+</body>
+</html>

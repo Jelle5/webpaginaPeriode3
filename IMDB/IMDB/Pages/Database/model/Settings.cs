@@ -20,4 +20,5 @@ public class Settings
      public int seasonnr { get; set; } = 0;
      public int episodenr { get; set; } = 0;
      public int limit { get; set; } = 0;
+     
 }
