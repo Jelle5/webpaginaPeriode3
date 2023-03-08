@@ -1,6 +1,7 @@
 @page
 @using WebApplication2.Pages.Database.model
 @using WebApplication2.Pages.Database.repository
+@using OpenAI_API.Embedding
 @model WebApplication2.Pages.DashBoard
 
 @{
@@ -22,6 +23,9 @@
     <title>Dashboard</title>
 </head>
 <body>
+<div>
+    <canvas id="myChart"></canvas>
+</div>
 
 <div>
     <table class="table table-hover">
@@ -84,7 +88,7 @@
                     <div>
                         <label>Type</label>
                         <select name="type" id="type" asp-for="settings.type">
-                            <option value="empty">empty</option>   
+                            <option value="empty">empty</option>
                             @foreach (var type in Model.types)
                             {
                                 <option value="@type.type">@type.type</option>
@@ -173,9 +177,9 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-danger" asp-page-handler="Clear">Reset</button>
-                    
+
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    
+
                     <button class="btn btn-primary" asp-page-handler="Filter">Save changes</button>
                 </div>
             </form>
@@ -186,3 +190,80 @@
 
 </body>
 </html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@* <script> *@
+@*       const ctx = document.getElementById('myChart'); *@
+@* *@
+@*       new Chart(ctx, { *@
+@*           type: 'bar', *@
+@*               data: { *@
+@*                 labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9' , '10'], *@
+@*                 datasets: [{ *@
+@*                   label: 'Movies per Rating', *@
+@*                   data: [@Model.countdata[0], *@
+@*                   @Model.countdata[1],@Model.countdata[2],@Model.countdata[3], *@
+@*                   @Model.countdata[4],@Model.countdata[5],@Model.countdata[6], *@
+@*                   @Model.countdata[7],@Model.countdata[8],@Model.countdata[9]], *@
+@*                   borderRadius: 5, *@
+@*                   backgroundColor: [ *@
+@*                                             'rgba(255, 0, 0, 0.8)', *@
+@*                                             'rgba(255, 80, 0, 0.8)', *@
+@*                                             'rgba(255, 140, 0, 0.8)', *@
+@*                                             'rgba(255, 215, 0, 0.8)', *@
+@*                                             'rgba(255, 255, 0, 0.8)', *@
+@*                                             'rgba(173, 255, 47, 0.8)', *@
+@*                                             'rgba(154, 205, 50, 0.8)', *@
+@*                                             'rgba(127, 255, 0, 0.8)', *@
+@*                                             'rgba(0, 128, 0, 0.8)', *@
+@*                                             'rgba(0, 100, 0, 0.8)' *@
+@*                                         ], *@
+@*                   borderWidth: 1 *@
+@*                 }, { *@
+@*                     }] *@
+@*               }, *@
+@*               options: { *@
+@*               indexAxis: 'y', *@
+@*                 scales: { *@
+@*                   y: { *@
+@*                     beginAtZero: true, *@
+@*                     reverse: true *@
+@*                   } *@
+@*                 } *@
+@*               } *@
+@*       },  *@
+@*       ); *@
+@* *@
+@*     </script> *@
+
+<script>
+      const ctx = document.getElementById('myChart');
+
+      new Chart(ctx, {
+          data: {
+              datasets: [{
+                  type: 'bar',
+                  label: 'Movies per rating',
+                  data: [@Model.countdata[0], @Model.countdata[1],@Model.countdata[2],@Model.countdata[3], @Model.countdata[4], @Model.countdata[5], @Model.countdata[6], @Model.countdata[7], @Model.countdata[8], @Model.countdata[9]],
+              }, {
+                  type: 'line',
+                  label: 'Average Rating',
+                  data: [@Model.averagedata[0], @Model.averagedata[1],@Model.averagedata[2],@Model.averagedata[3], @Model.averagedata[4], @Model.averagedata[5], @Model.averagedata[6], @Model.averagedata[7], @Model.averagedata[8], @Model.averagedata[9]],
+              }],
+              labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9' , '10']
+          },
+          options: {
+            indexAxis: 'y', 
+            scales: { 
+              y: { 
+                beginAtZero: true, 
+                reverse: true 
+              } 
+            } 
+          }
+      });
+
+
+    </script>

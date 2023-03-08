@@ -17,6 +17,9 @@ public class DashBoard : PageModel
     
     public IEnumerable<Title> types { get; set; }
 
+    public string[] countdata = new string[10];
+    public string[] averagedata = new string[10];
+
     public Title title;
     public IActionResult OnGet()
     {
@@ -45,6 +48,9 @@ public class DashBoard : PageModel
          }
 
         types = new TitleRepo().getAllType();
+        
+        getData();
+
         return Page();
     }
 
@@ -68,5 +74,29 @@ public class DashBoard : PageModel
         Response.Cookies.Append("settings", json.ToString());
 
         return RedirectToPage();
+    }
+
+    public void getData()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            List<int> count = new List<int>(); // move initialization outside loop
+            List<double> average = new List<double>();
+            
+            foreach (var title in titles)
+            {
+                int rounded = (int)Math.Round(title.averagerating);
+                if (rounded == i)
+                {
+                    count.Add(rounded); // append to count list
+                    average.Add(title.averagerating);
+                }
+            }
+
+            int total = count.Count;
+            string totalstring = total.ToString();
+            countdata[i] = totalstring;  // add count for current value of i
+            //averagedata[i] = average.Average().ToString();
+        }
     }
 }
