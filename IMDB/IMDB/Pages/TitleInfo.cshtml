@@ -13,6 +13,9 @@
 <head>
     <!--<link rel="stylesheet" href="/css/dash.css">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-tFQQmqWT2QYkZI9Kyv0AL1xWmzQ2K0GmL0v7m+clW1Zt/DpZtKX1TD7zgt/0CIfvnj4c3+iO5N7zN/DaRfVIAA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <title>Dashboard</title>
 </head>
 <body>
@@ -61,9 +64,9 @@
         @foreach (var title in Model.title)
         {
             <tr>
-             <td>
-                 <p>Adult: @title.isadult.ToString().ToLower()</p> 
-             </td>
+                <td>
+                    <p>Adult: @title.isadult.ToString().ToLower()</p> 
+                </td>
             </tr>
             <tr>
                 <td>
@@ -97,7 +100,22 @@
         {
             <tr>
                 <td>
-                    <p>@title.averagerating / @title.numvotes</p> 
+                    <div>
+                        <div style="display: inline-block; font-size: 30px; color: orange;">
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                if (title.averagerating >= i)
+                                {
+                                    <span>&#9733;</span>
+                                }
+                                else
+                                {
+                                    <span>&#9734;</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                    @title.numvotes
                 </td>
             </tr>
         }
@@ -117,7 +135,23 @@
         {
             <tr>
                 <td>
-                    <p>gross domestic: @title.gross_domestic.ToString("C3", CultureInfo.CreateSpecificCulture("en-US"))</p> 
+                    <div>
+                        <i class="fa fa-money" style="font-size: 24px"></i>
+                        <div style="display: inline-block; font-size: 30px;">
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                if (Math.Round((double)title.gross_domestic) / 100 >= i)
+                                {
+                                    <i class="fa fa-money" style="font-size: 24px"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-thumbs-up fa-2x"></i>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <p>gross domestic: @title.gross_domestic.ToString("C3", CultureInfo.CreateSpecificCulture("en-US"))</p>
                 </td>
             </tr>
             <tr>
@@ -203,3 +237,12 @@
 </div> 
 </body>
 </html>
+
+@functions 
+{
+    public string GetStarStyle(double avgrating, int starNumber)
+    {
+        int rating = (int)Math.Round(avgrating / 2); // Map 0-10 scale to 0-5 scale
+        return rating >= starNumber ? "fa-star" : "fa-star-o";
+    }
+}

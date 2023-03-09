@@ -17,8 +17,8 @@ public class DashBoard : PageModel
     
     public IEnumerable<Title> types { get; set; }
 
-    public string[] countdata = new string[10];
-    public string[] averagedata = new string[10];
+    public double[] countdata = new double[20];
+    public double[] averagedata = new double[20];
 
     public Title title;
     public IActionResult OnGet()
@@ -78,25 +78,24 @@ public class DashBoard : PageModel
 
     public void getData()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
-            List<int> count = new List<int>(); // move initialization outside loop
+            List<double> count = new List<double>(); // move initialization outside loop
             List<double> average = new List<double>();
             
             foreach (var title in titles)
             {
-                int rounded = (int)Math.Round(title.averagerating);
-                if (rounded == i)
+                double rounded = Math.Round(title.averagerating * 2, MidpointRounding.AwayFromZero) / 2;
+                
+                if (Math.Round(title.averagerating * 2) == i)
                 {
                     count.Add(rounded); // append to count list
                     average.Add(title.averagerating);
                 }
             }
-
-            int total = count.Count;
-            string totalstring = total.ToString();
-            countdata[i] = totalstring;  // add count for current value of i
-            //averagedata[i] = average.Average().ToString();
+            
+            countdata[i] = count.Count;  // add count for current value of i
+            averagedata[i] = average.Any() ? average.Average() : 0;
         }
     }
 }
