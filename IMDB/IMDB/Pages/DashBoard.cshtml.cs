@@ -48,7 +48,7 @@ public class DashBoard : PageModel
         //Update de settings cookie hier.
         string json;
         json = JsonConvert.SerializeObject(settings);
-        Response.Cookies.Append("settings", json.ToString());
+        
         
         return RedirectToPage();
     }

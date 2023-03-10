@@ -102,19 +102,19 @@ public class lists
         new Tuple<string, string>( "hoofdtitel", "isoriginal"),
         new Tuple<string, string>( "titel", "isoriginal")
     };
-    
+
     public List<Tuple<string, string>> filter = new List<Tuple<string, string>>
     {
-        new Tuple<string, string>( "gemiddeld", ""),
-        new Tuple<string, string>( "gemiddelde", ""),
-        new Tuple<string, string>( "hoogste", "region"),
-        new Tuple<string, string>( "laagste", "language"),
-        new Tuple<string, string>( "beste", "isoriginal"),
-        new Tuple<string, string>( "slechste", "isoriginal"),
-        new Tuple<string, string>( "<", "<"),
-        new Tuple<string, string>( ">", ">"),
-        new Tuple<string, string>( "langst", ">"),
-        new Tuple<string, string>( "kortst", ">")
+        new Tuple<string, string>("gemiddeld", ""),
+        new Tuple<string, string>("gemiddelde", ""),
+        new Tuple<string, string>("hoger", ">"),
+        new Tuple<string, string>("groter", ">"),
+        new Tuple<string, string>("kleiner", "<"),
+        new Tuple<string, string>("minder", "<"),
+        new Tuple<string, string>("gelijk", "="),
+        new Tuple<string, string>("is", "="),
     };
-   
+
+
+
 }

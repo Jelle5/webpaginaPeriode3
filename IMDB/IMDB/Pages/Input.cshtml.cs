@@ -3,14 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApplication2.Pages.Database.model;
 using WebApplication2.Pages.Database.repository;
+using System;
+using Newtonsoft.Json;
 
 namespace WebApplication2.Pages;
 
 public class Input : PageModel
 {
     private listsRepo ultimatelist = new listsRepo();
-    public IActionResult OnGet()
+    
+
+    public List<List<Tuple<string, string>>> feedback = new List<List<Tuple<string, string>>>();
+    public IActionResult OnGet(List<List<Tuple<string, string>>> Feedback)
     {
+        
         return Page();
     }
 
@@ -20,7 +26,43 @@ public class Input : PageModel
         vraag = vraag.ToLower();
         var list = GetWords(vraag);
         var final = match(list);
-        ultimatelist.search(final);
+        if (final[11].Count == 0)
+        {
+            ultimatelist.search(final);
+        }
+        else
+        {
+            string ultimatelist = Request.Cookies["ultimatelist"];
+            string json = JsonConvert.SerializeObject(final);
+            if (ultimatelist == null)
+            {
+                Response.Cookies.Append("ultimatelist", json , new CookieOptions()
+                {
+                    Expires = DateTimeOffset.Now.AddDays(30)
+                });
+            }
+            else
+            {
+                Response.Cookies.Append("ultimatelist", json);
+            }
+            
+        }
+        feedback = final;
+        return Page();
+    }
+    public IActionResult OnPostAntwoord([FromForm] string antwoord)
+    {
+        string ultimate = Request.Cookies["ultimatelist"];
+        feedback = JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(ultimate);
+        List<Tuple<string, string>> where = new List<Tuple<string, string>>();
+        foreach (var ints in feedback[11])
+        {
+            where.Add(Tuple.Create(ints.Item1, antwoord));
+        }
+        feedback.RemoveAt(11);
+        feedback.Add(where);
+        
+        ultimatelist.search(feedback);
         return RedirectToPage();
     }
     
@@ -71,6 +113,28 @@ public class Input : PageModel
         ultimate.Add(control.site.Where(t => input.Contains(t.Item1)).ToList());
         
         ultimate.Add(control.aka.Where(t => input.Contains(t.Item1)).ToList());
+        
+        List<Tuple<string, string>> filters =  control.filter.Where(t => input.Contains(t.Item1)).ToList();
+
+        List<Tuple<string, string>> ints = new List<Tuple<string, string>>();
+        
+        if (filters.Count != 0)
+        {
+            foreach (var inputs in input)
+            {
+                try
+                { 
+                    Int32.Parse(inputs);
+                    ints.Add(Tuple.Create(inputs, ""));
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+        ultimate.Add(filters);
+        ultimate.Add(ints);
 
         return ultimate;
     }

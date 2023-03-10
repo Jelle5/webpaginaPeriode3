@@ -15,6 +15,7 @@ public class listsRepo
     public IEnumerable search(List<List<Tuple<string, string>>> ultimate)
     {
         var sqlSelect = new List<string>();
+        var where = new List<string>();
         var queryParams = new DynamicParameters();
         var sqlFromTable = new List<string>();
         int count = 0;
@@ -48,20 +49,35 @@ public class listsRepo
                             sqlFromTable.Add(" INNER JOIN " + table[count].Item1 + " on " + table[count].Item1 + ".nconst = "+ table[count].Item2+ ".nconst \n");
                         }
                     }
+                    else if (count == 10)
+                    {
+                        if (lijst.Count != 0)
+                        {
+                            foreach (var statement in lijst)
+                            {
+                                foreach (var columns in ultimate[11])
+                                {
+                                    where.Add(columns.Item2 + " " + statement.Item2 + " " + columns.Item1);
+                                }
+
+                            }
+                            
+                        }
+                    }
                     else if(count == 4)
                     {
                         // call andere functie later
                     }
-                    else
+                    else if(count != 11)
                     {
                         sqlFromTable.Add(" INNER JOIN " + table[count].Item2 + " on " + table[count].Item2 + ".tconst = title.tconst \n"  );
                         sqlFromTable.Add(" INNER JOIN " + table[count].Item1 + " on " + table[count].Item1 + "." + table[count].Item3 + " = "+ table[count].Item2+ "." + table[count].Item3 + "\n");
                     }
 
-                    
+                   
                 }
 
-                if (lijst != ultimate[4])
+                if (lijst != ultimate[4] && lijst != ultimate[10] && lijst != ultimate[11])
                 {
                     foreach (var lijstje in lijst)
                     {
@@ -93,7 +109,14 @@ public class listsRepo
         {
             sql += inner;
         }
-        
+
+        sql += " WHERE ";
+        {
+            foreach (var whereclause in where)
+            {
+                sql += whereclause + " ";
+            }
+        }
         sql += " LIMIT 100";
         using var connection = getConnection();
         var title = connection.Query<Title>(sql, queryParams);
