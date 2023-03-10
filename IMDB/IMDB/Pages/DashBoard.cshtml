@@ -12,15 +12,21 @@
 
 <html>
 <head>
-    <!--<link rel="stylesheet" href="/css/dash.css">-->
-    <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/dataTables.bootstrap5.min.css" rel="stylesheet" >
+    <!-- Bootstrap core JavaScript--> 
+    <script src="js/jquery-3.5.1.js"></script> 
+    <!-- Page level plugin JavaScript-->
+    <link rel="stylesheet" type="text/css" href="js/datatables.min.css"/>
+    <script type="text/javascript" src="js/datatables.min.js"></script> 
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script src="https://www.gstatic.com/charts/loader.js"></script>
+    
     <script type="text/javascript">
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
@@ -68,11 +74,12 @@
           chart.draw(view, options);
         }
     </script>
+
     <title>Dashboard</title>
 </head>
 <body>
 
-<div id="barchart_values"></div>
+<div class="border border-5" id="barchart_values"></div>
 
 <div>
     <table class="table table-hover">
@@ -90,7 +97,7 @@
             <th>episode number</th>
             <th>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Filters">
                     filters
                 </button>
 
@@ -120,18 +127,15 @@
     </table>
 </div>
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal" id="Filters" tabindex="-1" role="dialog" aria-labelledby="FiltersTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Filters</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="FiltersTitle">Filters</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post">
                 <div class="modal-body">
-
                     <div>
                         <label>Type</label>
                         <select name="type" id="type" asp-for="settings.type">
@@ -233,5 +237,7 @@
         </div>
     </div>
 </div>
+
+
 </body>
 </html>

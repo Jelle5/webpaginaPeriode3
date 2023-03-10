@@ -19,6 +19,7 @@ public class DashBoard : PageModel
 
     public double[] countdata = new double[20];
     public double[] averagedata = new double[20];
+    public List<int> votesdata = new List<int>();
 
     public Title title;
     public IActionResult OnGet()
@@ -27,25 +28,24 @@ public class DashBoard : PageModel
         {};
         
         //Vraagt de settings cookie hier op.
+        string settingsStr = Request.Cookies["settings"];
+        settings = new Settings();
          
-         string settingsStr = Request.Cookies["settings"];
-         settings = new Settings();
-         
-         if (settingsStr == null)
-         {
-             string json;
-             json = JsonConvert.SerializeObject(settings);
-             Response.Cookies.Append("settings", json.ToString(), new CookieOptions()
-             {
-                 Expires = DateTimeOffset.Now.AddDays(30)
-             }); 
-             titles = new TitleRepo().getAll();
-         }
-         else
-         {
-             settings = JsonConvert.DeserializeObject<Settings>(settingsStr);
-             titles = new TitleRepo().settings(settings);
-         }
+        if (settingsStr == null)
+        {
+            string json;
+            json = JsonConvert.SerializeObject(settings);
+            Response.Cookies.Append("settings", json.ToString(), new CookieOptions()
+        {
+            Expires = DateTimeOffset.Now.AddDays(30)
+        }); 
+            titles = new TitleRepo().getAll();
+        }
+        else
+        {
+            settings = JsonConvert.DeserializeObject<Settings>(settingsStr);
+            titles = new TitleRepo().settings(settings);
+        }
 
         types = new TitleRepo().getAllType();
         
@@ -92,6 +92,8 @@ public class DashBoard : PageModel
                     count.Add(rounded); // append to count list
                     average.Add(title.averagerating);
                 }
+                
+                votesdata.Add(title.numvotes);
             }
             
             countdata[i] = count.Count;  // add count for current value of i

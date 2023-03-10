@@ -4,7 +4,7 @@ namespace WebApplication2.Pages.Database.model;
 
 public class Settings
 {
-     public string type { get; set; } = "";
+     public string type { get; set; } = "movie";
      public string isAdult { get; set; } = "";
      [StringLength(1)] public string isstart { get; set; }   = "";
      public int startyear { get; set; }  = 0;
@@ -14,8 +14,8 @@ public class Settings
      public int runtimeMinutes { get; set; }  = 0;
      [StringLength(1)] public string isavg { get; set; } = "";
      public double averagerating { get; set; }   = 0;
-     [StringLength(1)] public string isnum { get; set; }   = "";
-     public int numVotes { get; set; }  = 0;
+     [StringLength(1)] public string isnum { get; set; }   = ">";
+     public int numVotes { get; set; }  = 5000;
      [StringLength(1)] public string isseason { get; set; }  = "";
      public int seasonnr { get; set; } = 0;
      public int episodenr { get; set; } = 0;
