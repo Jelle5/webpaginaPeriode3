@@ -14,8 +14,10 @@
     <!--<link rel="stylesheet" href="/css/dash.css">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-tFQQmqWT2QYkZI9Kyv0AL1xWmzQ2K0GmL0v7m+clW1Zt/DpZtKX1TD7zgt/0CIfvnj4c3+iO5N7zN/DaRfVIAA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-tFQQmqWT2QYkZI9Kyv0AL1xWmzQ2K0GmL0v7m+clW1Zt/DpZtKX1TD7zgt/0CIfvnj4c3+iO5N7zN/DaRfVIAA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> *@
+    
+    <script src="https://kit.fontawesome.com/a8590f6f14.js" crossorigin="anonymous"></script>
+    
     <title>Dashboard</title>
 </head>
 <body>
@@ -136,17 +138,16 @@
             <tr>
                 <td>
                     <div>
-                        <i class="fa fa-money" style="font-size: 24px"></i>
-                        <div style="display: inline-block; font-size: 30px;">
-                            @for (int i = 1; i <= 10; i++)
+                        <div style="display: inline-block; font-size: 30px; color: orange;">
+                            @for (int i = 1; i <= 100; i++)
                             {
                                 if (Math.Round((double)title.gross_domestic) / 100 >= i)
                                 {
-                                    <i class="fa fa-money" style="font-size: 24px"></i>
+                                    <span>&#xf0d6;</span>
                                 }
                                 else
                                 {
-                                    <i class="fas fa-thumbs-up fa-2x"></i>
+                                    <span>&#xf0d6;</span>
                                 }
                             }
                         </div>
