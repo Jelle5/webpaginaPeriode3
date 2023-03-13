@@ -12,7 +12,7 @@ public class listsRepo
         return new DbUtils().Connect();
     }
 
-    public IEnumerable search(List<List<Tuple<string, string>>> ultimate)
+    public List<dynamic> search(List<List<Tuple<string, string>>> ultimate)
     {
         var sqlSelect = new List<string>();
         var where = new List<string>();
@@ -119,7 +119,7 @@ public class listsRepo
         }
         sql += " LIMIT 100";
         using var connection = getConnection();
-        var title = connection.Query<Title>(sql, queryParams);
+        var title = connection.Query(sql, queryParams).ToList();
 
         return title;
     }

@@ -24,19 +24,34 @@
     <input type="hidden" id="ultimate" name="ultimate" value="@Model.feedback"/>
     @if (Model.feedback != null)
     {
+      int iterator = 0;
       foreach (var lists in Model.feedback)
       {
-        if (lists != Model.feedback[10] || lists != Model.feedback[11])
+        
+        if (iterator != 10)
         {
-          foreach (var colums in lists)
+          if (iterator != 11)
           {
-            <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
-            <button>@colums.Item1</button>
+            foreach (var colums in lists)
+            {
+              <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
+              <button>@colums.Item1</button>
+            }
           }
         }
+        iterator++;
       }
     }
   </form>
+</div>
+<div>
+  @if (Model.answer != null)
+  {
+    foreach (var VARIABLE in Model.answer)
+    {
+      <p>@VARIABLE</p>
+    }
+  }
 </div>
 </body>
 </html>
