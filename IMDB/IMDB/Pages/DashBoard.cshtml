@@ -1,7 +1,4 @@
 @page
-@using WebApplication2.Pages.Database.model
-@using WebApplication2.Pages.Database.repository
-@using OpenAI_API.Embedding
 @model WebApplication2.Pages.DashBoard
 
 @{
@@ -13,77 +10,52 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link href="css/dataTables.bootstrap5.min.css" rel="stylesheet" >
-    <!-- Bootstrap core JavaScript--> 
-    <script src="js/jquery-3.5.1.js"></script> 
-    <!-- Page level plugin JavaScript-->
-    <link rel="stylesheet" type="text/css" href="js/datatables.min.css"/>
-    <script type="text/javascript" src="js/datatables.min.js"></script> 
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
     <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ["Beoordeling", "Aantal", { role: "style" } ],
-            ["0.5", @Model.countdata[0], "#FF0000"],
-            ["1", @Model.countdata[1], "#DC143C"],
-            ["1.5", @Model.countdata[2], "#8B0000"],
-            ["2", @Model.countdata[3], "#800000"],
-            ["2.5", @Model.countdata[4], "#800020"],
-            ["3", @Model.countdata[5], "#A52A2A"],
-            ["3.5", @Model.countdata[6], "#8B3A3A"],
-            ["4", @Model.countdata[7], "#FF6347"],
-            ["4.5", @Model.countdata[8], "#FF7F50"],
-            ["5", @Model.countdata[9], "#FA8072"],
-            ["5.5", @Model.countdata[10], "#FFA500"],
-            ["6", @Model.countdata[11], "#CC5500"],
-            ["6.5", @Model.countdata[12], "#DAA520"],
-            ["7", @Model.countdata[13], "#FFDB58"],
-            ["7.5", @Model.countdata[14], "#808000"],
-            ["8", @Model.countdata[15], "#7FFF00"],
-            ["8.5", @Model.countdata[16], "#7FFF00"],
-            ["9", @Model.countdata[17], "#00FF7F"],
-            ["9.5", @Model.countdata[18], "#4CBB17"],
-            ["10", @Model.countdata[19], "#228B22"]
-          ]);
+          // Load the Visualization API and the corechart package.
+          google.charts.load('current', {'packages':['corechart']});
     
-          var view = new google.visualization.DataView(data);
-          view.setColumns([0, 1,
-                           { calc: "stringify",
-                             sourceColumn: 1,
-                             type: "string",
-                             role: "annotation" },
-                           2]);
+          // Set a callback to run when the Google Visualization API is loaded.
+          google.charts.setOnLoadCallback(drawChart);
     
-          var options = {
-            title: "Aantal resultaten per Rating",
-            width: 0.75 * $(window).width(),
-            height: 800,
-            bar: {groupWidth: "70%"},
-            legend: { position: "none" },
-          };
-          var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
-          chart.draw(view, options);
-        }
-    </script>
-
+          // Callback that creates and populates a data table,
+          // instantiates the pie chart, passes in the data and
+          // draws it.
+          function drawChart() {
+    
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+              ['Mushrooms', 3],
+              ['Onions', 1],
+              ['Olives', 1],
+              ['Zucchini', 1],
+              ['Pepperoni', 2]
+            ]);
+    
+            // Set chart options
+            var options = {'title':'How Much Pizza I Ate Last Night',
+                           'width':400,
+                           'height':300};
+    
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        </script>
     <title>Dashboard</title>
 </head>
 <body>
-
-<div class="border border-5" id="barchart_values"></div>
-
-<div>
+<div id="chart_div"></div>
+<div class="container-fluid">
     <table class="table table-hover">
-        <thead>
+        <thead class="thead-dark">
         <tr>
             <th>Primary</th>
             <th>Type</th>
@@ -96,11 +68,9 @@
             <th>season number</th>
             <th>episode number</th>
             <th>
-
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Filters">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filtersModal">
                     filters
                 </button>
-
             </th>
         </tr>
         </thead>
@@ -127,117 +97,125 @@
     </table>
 </div>
 
-<div class="modal" id="Filters" tabindex="-1" role="dialog" aria-labelledby="FiltersTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="FiltersTitle">Filters</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="filtersModalLabel">Filters</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post">
-                <div class="modal-body">
-                    <div>
-                        <label>Type</label>
-                        <select name="type" id="type" asp-for="settings.type">
-                            <option value="empty">empty</option>
-                            @foreach (var type in Model.types)
-                            {
-                                <option value="@type.type">@type.type</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <label>18+ </label>
-                        <select name="isAdult" id="isAdult" asp-for="settings.isAdult">
-                            <option value="true">true</option>
-                            <option value="false">false</option>
-                            <option value="all">all</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Start year</label>
-                        <select name="isstart" id="=1" asp-for="settings.isstart">
-                            <option value="=">=</option>
-                            <option value=">">></option>
-                            <option value="<"><</option>
-                        </select>
-                        <input id="startyear" name="startyear" placeholder="start year" style="width: 100px" asp-for="settings.startyear"/>
-                    </div>
-
-                    <div>
-                        <label>end year</label>
-                        <select name="isend" id="=2" asp-for="settings.isend">
-                            <option value="=">=</option>
-                            <option value=">">></option>
-                            <option value="<"><</option>
-                        </select>
-                        <input id="endyear" name="endyear" placeholder="end year" style="width: 100px" asp-for="settings.endyear"/>
-                    </div>
-
-                    <div>
-                        <label>num minutes</label>
-                        <select name="isruntime" id="=3" asp-for="settings.isruntime">
-                            <option value="=">=</option>
-                            <option value=">">></option>
-                            <option value="<"><</option>
-                        </select>
-                        <input name="runtimeMinutes" placeholder="num minutes" style="width: 100px" asp-for="settings.runtimeMinutes"/>
-                    </div>
-
-                    <div>
-                        <label>average rating</label>
-                        <select name="isavg" id="=4" asp-for="settings.isavg">
-                            <option value="=">=</option>
-                            <option value=">">></option>
-                            <option value="<"><</option>
-                        </select>
-                        <input name="averageRating" placeholder="avg rating" style="width: 100px" asp-for="settings.averagerating"/>
-                    </div>
-
-                    <div>
-                        <label>number of votes</label>
-                        <select name="isnum" id="=5" asp-for="settings.isnum">
-                            <option value="=">=</option>
-                            <option value=">">></option>
-                            <option value="<"><</option>
-                        </select>
-                        <input name="numVotes" placeholder="num votes" style="width: 100px" asp-for="settings.numVotes"/>
-                    </div>
-
-                    <div>
-                        <label>number of seasons</label>
-                        <select name="isseason" id="=6" asp-for="settings.isseason">
-                            <option value="=">=</option>
-                            <option value=">">></option>
-                            <option value="<"><</option>
-                        </select>
-                        <input name="seasonnr" placeholder="season number" style="width: 100px" asp-for="settings.seasonnr"/>
-                    </div>
-
-                    <div>
-                        <label>episode number</label>
-                        <input name="episodenr" placeholder="episode number" style="width: 100px" asp-for="settings.episodenr"/>
-                    </div>
-                    <div>
-                        <label>Aantal rows</label>
-                        <input name="Limit" placeholder="100" style="width: 100px" asp-for="settings.limit"/>
-                    </div>
-
-                </div>
-
+            <form>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><label>Type</label></td>
+                        <td></td>
+                        <td>
+                            <select name="type" id="type" asp-for="settings.type">
+                                <option value="empty">empty</option>
+                                @foreach (var type in Model.types)
+                                {
+                                    <option value="@type.type">@type.type</option>
+                                }
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <td><label>18+</label></td>
+                        <td></td>
+                        <td>
+                            <select name="isAdult" id="isAdult" asp-for="settings.isAdult">
+                                <option value="true">true</option>
+                                <option value="false">false</option>
+                                <option value="all">all</option>
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <td><label>Start year</label></td>
+                        <td>
+                            <select name="isstart" id="=1" asp-for="settings.isstart">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                            </select></td>
+                        <td><input id="startyear" name="startyear" placeholder="start year" style="width: 100px" asp-for="settings.startyear"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>end year</label></td>
+                        <td>
+                            <select name="isend" id="=2" asp-for="settings.isend">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                            </select></td>
+                        <td><input id="endyear" name="endyear" placeholder="end year" style="width: 100px" asp-for="settings.endyear"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>num minutes</label></td>
+                        <td>
+                            <select name="isruntime" id="=3" asp-for="settings.isruntime">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                            </select></td>
+                        <td><input name="runtimeMinutes" placeholder="num minutes" style="width: 100px" asp-for="settings.runtimeMinutes"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>average rating</label></td>
+                        <td>
+                            <select name="isavg" id="=4" asp-for="settings.isavg">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                            </select></td>
+                        <td><input name="averageRating" placeholder="avg rating" style="width: 100px" asp-for="settings.averagerating"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>number of votes</label></td>
+                        <td>
+                            <select name="isnum" id="=5" asp-for="settings.isnum">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                            </select></td>
+                        <td><input name="numVotes" placeholder="num votes" style="width: 100px" asp-for="settings.numVotes"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>number of seasons</label></td>
+                        <td>
+                            <select name="isseason" id="=6" asp-for="settings.isseason">
+                                <option value="=">=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                            </select></td>
+                        <td><input name="seasonnr" placeholder="season number" style="width: 100px" asp-for="settings.seasonnr"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>episode number</label></td>
+                        <td></td>
+                        <td><input name="episodenr" placeholder="episode number" style="width: 100px" asp-for="settings.episodenr"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>Aantal rows</label></td>
+                        <td></td>
+                        <td><input name="Limit" placeholder="100" style="width: 100px" asp-for="settings.limit"/></td>
+                    </tr>
+                    </tbody>
+                </table>
                 <div class="modal-footer">
                     <button class="btn btn-danger" asp-page-handler="Clear">Reset</button>
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button class="btn btn-primary" asp-page-handler="Filter">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
 </body>
 </html>

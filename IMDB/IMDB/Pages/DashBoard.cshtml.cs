@@ -78,26 +78,18 @@ public class DashBoard : PageModel
 
     public void getData()
     {
-        for (int i = 0; i < 20; i++)
+        string filePath = "csvData/DashboardTable.csv";
+        using (StreamWriter writer = new StreamWriter(filePath))
         {
-            List<double> count = new List<double>(); // move initialization outside loop
-            List<double> average = new List<double>();
-            
-            foreach (var title in titles)
+            var headers = titles.First().GetType().GetProperties().Select(p => p.Name);
+            writer.WriteLine(string.Join(";", headers));
+
+            foreach (var row in titles)
             {
-                double rounded = Math.Round(title.averagerating * 2, MidpointRounding.AwayFromZero) / 2;
-                
-                if (Math.Round(title.averagerating * 2) == i)
-                {
-                    count.Add(rounded); // append to count list
-                    average.Add(title.averagerating);
-                }
-                
-                votesdata.Add(title.numvotes);
+                var values = row.GetType().GetProperties().Select(p => p.GetValue(row, null));
+                var valueStrings = values.Select(v => v == null ? "" : v.ToString());
+                writer.WriteLine(string.Join(";", valueStrings));
             }
-            
-            countdata[i] = count.Count;  // add count for current value of i
-            averagedata[i] = average.Any() ? average.Average() : 0;
         }
     }
 }

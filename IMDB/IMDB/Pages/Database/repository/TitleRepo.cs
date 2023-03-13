@@ -139,20 +139,6 @@ public class TitleRepo
         using var connection = getConnection();
         var title = connection.Query<Title>(sql, queryParams);
 
-        string filePath = "csvData/DashboardTable.csv";
-        using (StreamWriter writer = new StreamWriter(filePath))
-        {
-            var headers = title.First().GetType().GetProperties().Select(p => p.Name);
-            writer.WriteLine(string.Join(";", headers));
-
-            foreach (var row in title)
-            {
-                var values = row.GetType().GetProperties().Select(p => p.GetValue(row, null));
-                var valueStrings = values.Select(v => v == null ? "" : v.ToString());
-                writer.WriteLine(string.Join(";", valueStrings));
-            }
-        }
-
         return title;
     }
 }
