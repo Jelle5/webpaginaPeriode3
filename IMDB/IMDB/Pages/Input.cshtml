@@ -20,9 +20,7 @@
   </form>
 </div>
 <div>
-  <form method="post" asp-page-handler="Antwoord">
-    <input type="hidden" id="ultimate" name="ultimate" value="@Model.feedback"/>
-    @if (Model.feedback != null)
+  @if (Model.feedback != null)
     {
       int iterator = 0;
       foreach (var lists in Model.feedback)
@@ -34,15 +32,17 @@
           {
             foreach (var colums in lists)
             {
+              <form method="post" asp-page-handler="Antwoord">
               <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
               <button>@colums.Item1</button>
+              </form>
             }
           }
         }
         iterator++;
       }
     }
-  </form>
+  
 </div>
 <div>
   @if (Model.answer != null)

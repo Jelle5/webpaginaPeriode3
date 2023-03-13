@@ -17,10 +17,11 @@ public class Input : PageModel
     public List<List<Tuple<string, string>>> feedback = new List<List<Tuple<string, string>>>();
     public IActionResult OnGet(List<List<Tuple<string, string>>> Feedback)
     {
+        
         string ultimate = Request.Cookies["answerlist"];
         if (!string.IsNullOrEmpty(ultimate))
         {
-            answer = JsonConvert.DeserializeObject<List<dynamic>>(ultimate);
+            answer = ultimatelist.search( JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(ultimate));
         }
 
         return Page();
@@ -36,7 +37,7 @@ public class Input : PageModel
         var final = match(list);
         if (final[11].Count == 0)
         {
-             json = JsonConvert.SerializeObject( this.ultimatelist.search(final));
+             json = JsonConvert.SerializeObject( final);
              
              string ultimatelist = Request.Cookies["answerlist"];
              if (ultimatelist == null)
@@ -83,7 +84,7 @@ public class Input : PageModel
         }
         feedback.RemoveAt(11);
         feedback.Add(where);
-        string json = JsonConvert.SerializeObject( this.ultimatelist.search(feedback));
+        string json = JsonConvert.SerializeObject( feedback);
              
         string ultimatelist = Request.Cookies["answerlist"];
         if (ultimatelist == null)
