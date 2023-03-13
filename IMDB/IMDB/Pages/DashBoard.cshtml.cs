@@ -49,7 +49,7 @@ public class DashBoard : PageModel
 
         types = new TitleRepo().getAllType();
         
-        getData();
+        getData(titles);
 
         return Page();
     }
@@ -76,7 +76,7 @@ public class DashBoard : PageModel
         return RedirectToPage();
     }
 
-    public void getData()
+    public void getData(IEnumerable<Title> titles)
     {
         string filePath = "csvData/DashboardTable.csv";
         using (StreamWriter writer = new StreamWriter(filePath))
