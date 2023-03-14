@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApplication2.Pages.Database.model;
 using WebApplication2.Pages.Database.repository;
 using System;
+using System.Data;
 using Newtonsoft.Json;
 
 namespace WebApplication2.Pages;
@@ -11,11 +12,11 @@ namespace WebApplication2.Pages;
 public class Input : PageModel
 {
     private listsRepo ultimatelist = new listsRepo();
-    public List<dynamic> answer = new List<dynamic>();
+    public DataTable answer = new DataTable();
     
 
     public List<List<Tuple<string, string>>> feedback = new List<List<Tuple<string, string>>>();
-    public IActionResult OnGet(List<List<Tuple<string, string>>> Feedback)
+    public IActionResult OnGet()
     {
         
         string ultimate = Request.Cookies["answerlist"];
@@ -23,9 +24,16 @@ public class Input : PageModel
         {
             answer = ultimatelist.search( JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(ultimate));
         }
+        string Feedback = Request.Cookies["ultimatelist"];
+        if (!string.IsNullOrEmpty(Feedback))
+        {
+            this.feedback =  JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(Feedback);
+        }
 
         return Page();
     }
+
+   
 
     public IActionResult OnPostVraag([FromForm] string vraag)
     {
@@ -70,12 +78,13 @@ public class Input : PageModel
             }
         }
 
-        feedback = final;
-        return Page();
+        
+        return RedirectToPage();
     }
     public IActionResult OnPostAntwoord([FromForm] string antwoord)
     {
         string ultimate = Request.Cookies["ultimatelist"];
+        Response.Cookies.Delete("ultimatelist");
         feedback = JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(ultimate);
         List<Tuple<string, string>> where = new List<Tuple<string, string>>();
         foreach (var ints in feedback[11])
@@ -104,7 +113,7 @@ public class Input : PageModel
     
     static List<string> GetWords(string input)
     {
-        MatchCollection matches = Regex.Matches(input, @"\b[\w']*\b");
+        MatchCollection matches = Regex.Matches(input, @"\b[\w',.]*\b");
 
         var words = from m in matches.Cast<Match>()
             where !string.IsNullOrEmpty(m.Value)
@@ -160,7 +169,7 @@ public class Input : PageModel
             {
                 try
                 { 
-                    Int32.Parse(inputs);
+                    float.Parse(inputs);
                     ints.Add(Tuple.Create(inputs, ""));
                 }
                 catch (Exception e)

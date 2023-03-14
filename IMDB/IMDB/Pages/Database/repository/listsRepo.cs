@@ -12,7 +12,7 @@ public class listsRepo
         return new DbUtils().Connect();
     }
 
-    public List<dynamic> search(List<List<Tuple<string, string>>> ultimate)
+    public DataTable search(List<List<Tuple<string, string>>> ultimate)
     {
         var sqlSelect = new List<string>();
         var where = new List<string>();
@@ -57,7 +57,7 @@ public class listsRepo
                             {
                                 foreach (var columns in ultimate[11])
                                 {
-                                    where.Add(columns.Item2 + " " + statement.Item2 + " " + columns.Item1);
+                                    where.Add(columns.Item2 + " " + statement.Item2 + " " + columns.Item1.Replace(",", "."));
                                 }
 
                             }
@@ -114,13 +114,46 @@ public class listsRepo
         {
             foreach (var whereclause in where)
             {
-                sql += whereclause + " ";
+                if (whereclause == where[0])
+                {
+                    sql += whereclause + " ";
+                }
+                else
+                {
+                    sql += "AND " + whereclause + " ";
+                }
+                
             }
         }
         sql += " LIMIT 100";
         using var connection = getConnection();
-        var title = connection.Query(sql, queryParams).ToList();
+        var dapperList = connection.Query(sql, queryParams).ToList();
+        
+        DataTable dt = new DataTable();
 
-        return title;
+        // Add columns to the DataTable based on the properties of the first row
+        dynamic firstRow = dapperList.FirstOrDefault();
+        if (firstRow != null)
+        {
+            foreach (var property in firstRow)
+            {
+                dt.Columns.Add(property.Key, property.Value?.GetType() ?? typeof(object));
+            }
+        }
+
+        // Add rows to the DataTable
+        foreach (dynamic row in dapperList)
+        {
+            DataRow dr = dt.NewRow();
+
+            foreach (var property in row)
+            {
+                dr[property.Key] = property.Value;
+            }
+
+            dt.Rows.Add(dr);
+        }
+        
+        return dt;
     }
 }

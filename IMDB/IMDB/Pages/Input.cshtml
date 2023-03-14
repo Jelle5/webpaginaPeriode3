@@ -1,4 +1,5 @@
 @page
+@using System.Data
 @model WebApplication2.Pages.Input
 
 @{
@@ -9,7 +10,13 @@
 
 <html>
 <head>
-  <title></title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <title></title>
 </head>
 <body>
 <div>
@@ -21,37 +28,62 @@
 </div>
 <div>
   @if (Model.feedback != null)
+  {
+    int iterator = 0;
+    foreach (var lists in Model.feedback)
     {
-      int iterator = 0;
-      foreach (var lists in Model.feedback)
-      {
         
-        if (iterator != 10)
+      if (iterator != 10)
+      {
+        if (iterator != 11)
         {
-          if (iterator != 11)
+          foreach (var colums in lists)
           {
-            foreach (var colums in lists)
-            {
-              <form method="post" asp-page-handler="Antwoord">
+            <form method="post" asp-page-handler="Antwoord">
               <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
               <button>@colums.Item1</button>
-              </form>
-            }
+            </form>
           }
         }
-        iterator++;
       }
-    }
-  
-</div>
-<div>
-  @if (Model.answer != null)
-  {
-    foreach (var VARIABLE in Model.answer)
-    {
-      <p>@VARIABLE</p>
+      iterator++;
     }
   }
+  
 </div>
+@if (Model.answer != null)
+{
+  <div>
+    @{
+        
+        // TODO: populate the DataTable with data from your database or other source
+    
+        // Get the column names from the DataTable
+        string[] columnNames = Model.answer.Columns.Cast<DataColumn>().Select(col => col.ColumnName).ToArray();
+    }
+    <table class="table ">
+        <thead>
+            <tr>
+                @foreach (string columnName in columnNames)
+                {
+                    <th>@columnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.answer.Rows)
+            {
+                <tr>
+                    @foreach (string columnName in columnNames)
+                    {
+                        <td>@(row[columnName] != null ? row[columnName].ToString() : "")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+  </div>
+}
 </body>
 </html>
