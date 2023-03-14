@@ -19,16 +19,18 @@
     <title></title>
 </head>
 <body>
-<div>
+<div style="text-align: center; margin-top: 10px">
     
   <form method="post" asp-page-handler="Vraag">
-    <input id="vraag" name="vraag"/>
-    <button>FOEKE</button>
+    <input id="vraag" name="vraag" style="width: 750px"/>
+    <button class="btn btn-primary">Submit</button>
   </form>
 </div>
 <div>
-  @if (Model.feedback != null)
+  @if (Model.feedback.Count != 0)
   {
+      
+      <p>Van welk veld wilt u @Model.feedback[10][0].Item1 @Model.feedback[11][0].Item1</p>
     int iterator = 0;
     foreach (var lists in Model.feedback)
     {
@@ -40,8 +42,11 @@
           foreach (var colums in lists)
           {
             <form method="post" asp-page-handler="Antwoord">
-              <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
-              <button>@colums.Item1</button>
+                <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
+                <div>
+                <button class="btn btn-primary" style="margin: 5px">@colums.Item1</button> 
+                <span>van kolom: @colums.Item2</span>
+                </div>
             </form>
           }
         }
@@ -53,7 +58,7 @@
 </div>
 @if (Model.answer != null)
 {
-  <div>
+  <div style="margin: 5px">
     @{
         
         // TODO: populate the DataTable with data from your database or other source
@@ -61,7 +66,7 @@
         // Get the column names from the DataTable
         string[] columnNames = Model.answer.Columns.Cast<DataColumn>().Select(col => col.ColumnName).ToArray();
     }
-    <table class="table ">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 @foreach (string columnName in columnNames)

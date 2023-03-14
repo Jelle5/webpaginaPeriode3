@@ -5,8 +5,8 @@ public class lists
     public List<Tuple<string, string>> Title = new List<Tuple<string, string>>
     {
         new Tuple<string, string>( "categorie", "type"),
-        new Tuple<string, string>( "titel", "primary"),
-        new Tuple<string, string>( "films", "primary"),
+        new Tuple<string, string>( "titel", "primarytitle"),
+        new Tuple<string, string>( "films", "primarytitle"),
         new Tuple<string, string>( "volwassenen", "isadult"),
         new Tuple<string, string>( "start", "startyear"),
         new Tuple<string, string>( "eind", "endyear"),
@@ -36,14 +36,14 @@ public class lists
 
     public List<Tuple<string, string>> individual = new List<Tuple<string, string>>
     {
-        new Tuple<string, string>( "naam", "primary"),
-        new Tuple<string, string>( "namen", "primary"),
-        new Tuple<string, string>( "actrice", "primary"),
-        new Tuple<string, string>( "actrices", "primary"),
-        new Tuple<string, string>( "acteur", "primary"),
-        new Tuple<string, string>( "acteurs", "primary"),
-        new Tuple<string, string>( "voornaam", "primary"),
-        new Tuple<string, string>( "achternaam", "primary"),
+        new Tuple<string, string>( "naam", "primaryindividual"),
+        new Tuple<string, string>( "namen", "primaryindividual"),
+        new Tuple<string, string>( "actrice", "primaryindividual"),
+        new Tuple<string, string>( "actrices", "primaryindividual"),
+        new Tuple<string, string>( "acteur", "primaryindividual"),
+        new Tuple<string, string>( "acteurs", "primaryindividual"),
+        new Tuple<string, string>( "voornaam", "primaryindividual"),
+        new Tuple<string, string>( "achternaam", "primaryindividual"),
         new Tuple<string, string>( "geboorte", "birthyear"),
         new Tuple<string, string>( "geboren", "birthyear"),
         new Tuple<string, string>( "sterf", "deathyear"),
@@ -68,7 +68,7 @@ public class lists
     
     public List<Tuple<string, string>> ratings = new List<Tuple<string, string>>
     {
-        new Tuple<string, string>( "stemmen", "*"),
+        //new Tuple<string, string>( "stemmen", "*"),
         new Tuple<string, string>( "waardering", "*")
     };
     
@@ -103,8 +103,8 @@ public class lists
     
     public List<Tuple<string, string>> aka = new List<Tuple<string, string>>
     {
-        new Tuple<string, string>( "titel", "title"),
-        new Tuple<string, string>( "titels", "title"),
+        //new Tuple<string, string>( "titel", "title"),
+        //new Tuple<string, string>( "titels", "title"),
         new Tuple<string, string>( "regio", "region"),
         new Tuple<string, string>( "taal", "language"),
         new Tuple<string, string>( "hoofdtitel", "isoriginal"),
