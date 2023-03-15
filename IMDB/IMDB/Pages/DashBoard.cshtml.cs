@@ -1,5 +1,6 @@
 using System.Net;
 using System.Reflection.Metadata;
+using System.Security;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,9 +18,9 @@ public class DashBoard : PageModel
     
     public IEnumerable<Title> types { get; set; }
 
-    public double[] countdata = new double[20];
-    public double[] averagedata = new double[20];
-    public List<int> votesdata = new List<int>();
+    public List<object> dataOpeningDomestic = new List<object>();
+    public List<object> dataOpeningWorldwide = new List<object>();
+    public List<object> dataOpeningRating = new List<object>();
 
     public Title title;
     public IActionResult OnGet()
@@ -36,9 +37,9 @@ public class DashBoard : PageModel
             string json;
             json = JsonConvert.SerializeObject(settings);
             Response.Cookies.Append("settings", json.ToString(), new CookieOptions()
-        {
-            Expires = DateTimeOffset.Now.AddDays(30)
-        }); 
+            {
+                Expires = DateTimeOffset.Now.AddDays(30)
+            });
             titles = new TitleRepo().getAll();
         }
         else
@@ -56,11 +57,14 @@ public class DashBoard : PageModel
 
     public IActionResult OnPostFilter()
     {
-        //Update de settings cookie hier.
+        //Update the settings cookie here.
         string json;
         json = JsonConvert.SerializeObject(settings);
-        Response.Cookies.Append("settings", json.ToString());
-        
+        Response.Cookies.Append("settings", json.ToString(), new CookieOptions()
+        {
+            Expires = DateTimeOffset.Now.AddDays(30)
+        });
+    
         return RedirectToPage();
     }
 
@@ -76,20 +80,30 @@ public class DashBoard : PageModel
         return RedirectToPage();
     }
 
+    // public void getData(IEnumerable<Title> titles)
+    // {
+    //     string filePath = "csvData/DashboardTable.csv";
+    //     using (StreamWriter writer = new StreamWriter(filePath))
+    //     {
+    //         var headers = titles.First().GetType().GetProperties().Where(p => p.Name != "Principals").Select(p => p.Name);
+    //         writer.WriteLine(string.Join(";", headers));
+    //
+    //         foreach (var row in titles)
+    //         {
+    //             var values = row.GetType().GetProperties().Select(p => p.GetValue(row, null));
+    //             var valueStrings = values.Select(v => v == null ? "" : v.ToString());
+    //             writer.WriteLine(string.Join(";", valueStrings));
+    //         }
+    //     }
+    // }
+
     public void getData(IEnumerable<Title> titles)
     {
-        string filePath = "csvData/DashboardTable.csv";
-        using (StreamWriter writer = new StreamWriter(filePath))
+        foreach (var title in titles)
         {
-            var headers = titles.First().GetType().GetProperties().Select(p => p.Name);
-            writer.WriteLine(string.Join(";", headers));
-
-            foreach (var row in titles)
-            {
-                var values = row.GetType().GetProperties().Select(p => p.GetValue(row, null));
-                var valueStrings = values.Select(v => v == null ? "" : v.ToString());
-                writer.WriteLine(string.Join(";", valueStrings));
-            }
+            dataOpeningDomestic.Add(new { x = title.opening_weekend, y = title.gross_domestic, name = title.primary});
+            dataOpeningWorldwide.Add(new { x = title.opening_weekend, y = title.gross_worldwide, name = title.primary});
+            dataOpeningRating.Add(new { x = title.opening_weekend, y = title.averagerating, name = title.primary});
         }
     }
 }

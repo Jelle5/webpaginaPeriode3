@@ -1,4 +1,7 @@
 @page
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using WebApplication2.Pages.Database.model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApplication2.Pages.DashBoard
 
 @{
@@ -9,10 +12,14 @@
 
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<div id="app"></div>
+<div class="container">
+    <canvas class="w-100" id="gross"></canvas>
+</div>
 <div class="container-fluid">
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -50,7 +57,6 @@
                 <td>@title.numvotes</td>
                 <td>@title.seasonnr</td>
                 <td>@title.episodenr</td>
-
             </tr>
         }
         </tbody>
@@ -64,7 +70,7 @@
                 <h5 class="modal-title" id="filtersModalLabel">Filters</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+            <form method="post" asp-page-handler="Filter">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -179,3 +185,91 @@
 </div>
 </body>
 </html>
+
+<script>
+    var dataOpeningDomestic = @Html.Raw(Json.Serialize(Model.dataOpeningDomestic));
+    var dataOpeningWorldwide = @Html.Raw(Json.Serialize(Model.dataOpeningWorldwide));
+   
+    const ctx = document.getElementById('gross').getContext("2d");
+    
+    const data = {
+      datasets: [{
+        label: 'Opening weekend World wide',
+        data: dataOpeningWorldwide,
+        backgroundColor: 'rgb(255, 99, 132)',
+      },
+      {
+        label: 'Opening weekend Domestic',
+        data: dataOpeningDomestic,
+        backgroundColor: 'rgb(155, 84, 255)'    
+      }]
+    };
+    
+    let options = {
+        scales: {
+            responsive: true,
+            y: {
+                beginAtZero: true    
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks:{
+                    title: function (context){
+                        return context[0].raw.name;
+                    },
+                    label: function (context){
+                        return '(' + context.raw.x + ', ' + context.raw.y + ')';
+                    }
+                }
+            }
+        }
+    }
+    
+    new Chart(ctx, {
+    type: 'scatter',
+    data: data,
+    options: options
+    });
+</script>
+
+@* <script> *@
+@*     var dataRating = @Html.Raw(Json.Serialize(Model.dataOpeningRating)); *@
+@*      *@
+@*     const ctx = document.getElementById('rating').getContext("2d"); *@
+@*          *@
+@*         const data = { *@
+@*           datasets: [{ *@
+@*             label: 'Opening weekend World wide', *@
+@*             data: dataRating, *@
+@*             backgroundColor: 'rgb(255, 99, 132)', *@
+@*           }] *@
+@*         }; *@
+@*          *@
+@*         let options = { *@
+@*             scales: { *@
+@*                 responsive: true, *@
+@*                 y: { *@
+@*                     beginAtZero: true     *@
+@*                 } *@
+@*             }, *@
+@*             plugins: { *@
+@*                 tooltip: { *@
+@*                     callbacks:{ *@
+@*                         title: function (context){ *@
+@*                             return context[0].raw.name; *@
+@*                         }, *@
+@*                         label: function (context){ *@
+@*                             return '(' + context.raw.x + ', ' + context.raw.y + ')'; *@
+@*                         } *@
+@*                     } *@
+@*                 } *@
+@*             } *@
+@*         } *@
+@*          *@
+@*         new Chart(ctx, { *@
+@*         type: 'scatter', *@
+@*         data: data, *@
+@*         options: options *@
+@*         }); *@
+@* </script> *@

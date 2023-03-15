@@ -19,6 +19,6 @@ public class Settings
      [StringLength(1)] public string isseason { get; set; }  = "";
      public int seasonnr { get; set; } = 0;
      public int episodenr { get; set; } = 0;
-     public int limit { get; set; } = 0;
+     public int limit { get; set; } = 100;
      
 }
