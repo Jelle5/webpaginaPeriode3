@@ -2,6 +2,7 @@
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using WebApplication2.Pages.Database.model
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @model WebApplication2.Pages.DashBoard
 
 @{
@@ -13,12 +14,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <canvas class="w-100" id="gross"></canvas>
+    <canvas id="openingWeekend"></canvas>
+</div>
+<div class="container">
+    <canvas id="countries"></canvas>
 </div>
 <div class="container-fluid">
     <table class="table table-hover">
@@ -187,89 +191,75 @@
 </html>
 
 <script>
-    var dataOpeningDomestic = @Html.Raw(Json.Serialize(Model.dataOpeningDomestic));
-    var dataOpeningWorldwide = @Html.Raw(Json.Serialize(Model.dataOpeningWorldwide));
-   
-    const ctx = document.getElementById('gross').getContext("2d");
-    
+    var OpeningDomestic = @Html.Raw(Json.Serialize(Model.OpeningDomestic))
+    var OpeningWorldwide = @Html.Raw(Json.Serialize(Model.OpeningWorldwide))
+
+    var context = document.getElementById('openingWeekend').getContext('2d');
+
     const data = {
-      datasets: [{
-        label: 'Opening weekend World wide',
-        data: dataOpeningWorldwide,
-        backgroundColor: 'rgb(255, 99, 132)',
-      },
-      {
-        label: 'Opening weekend Domestic',
-        data: dataOpeningDomestic,
-        backgroundColor: 'rgb(155, 84, 255)'    
-      }]
-    };
-    
-    let options = {
-        scales: {
-            responsive: true,
-            y: {
-                beginAtZero: true    
-            }
+        datasets: [{
+            label: 'Eerste weekend vs Nationale opbrengst',
+            data: OpeningDomestic,
+            backgroundColor: 'rgb(255, 99, 132)'
         },
-        plugins: {
-            tooltip: {
-                callbacks:{
-                    title: function (context){
-                        return context[0].raw.name;
-                    },
-                    label: function (context){
-                        return '(' + context.raw.x + ', ' + context.raw.y + ')';
-                    }
+        {
+            label: 'Eerste weekend vs Wereldwijde opbrengst',
+            data: OpeningWorldwide,
+            backgroundColor: 'rgb(155, 84, 255)'
+        }],
+    };
+
+    const config = {
+        type: 'scatter',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    display: true,
+                    align: 'center',
+                    text: 'opening weekend',
+                    type: 'logarithmic'
+                },
+                y: {
+                    display: true,
+                    align: 'center',
+                    text: 'opbrengst nationaal',
+                    type: 'logarithmic'
                 }
             }
         }
-    }
-    
-    new Chart(ctx, {
-    type: 'scatter',
-    data: data,
-    options: options
-    });
+    };
+
+    var myChart = new Chart(context, config);
 </script>
 
-@* <script> *@
-@*     var dataRating = @Html.Raw(Json.Serialize(Model.dataOpeningRating)); *@
-@*      *@
-@*     const ctx = document.getElementById('rating').getContext("2d"); *@
-@*          *@
-@*         const data = { *@
-@*           datasets: [{ *@
-@*             label: 'Opening weekend World wide', *@
-@*             data: dataRating, *@
-@*             backgroundColor: 'rgb(255, 99, 132)', *@
-@*           }] *@
-@*         }; *@
-@*          *@
-@*         let options = { *@
-@*             scales: { *@
-@*                 responsive: true, *@
-@*                 y: { *@
-@*                     beginAtZero: true     *@
-@*                 } *@
-@*             }, *@
-@*             plugins: { *@
-@*                 tooltip: { *@
-@*                     callbacks:{ *@
-@*                         title: function (context){ *@
-@*                             return context[0].raw.name; *@
-@*                         }, *@
-@*                         label: function (context){ *@
-@*                             return '(' + context.raw.x + ', ' + context.raw.y + ')'; *@
-@*                         } *@
-@*                     } *@
-@*                 } *@
-@*             } *@
-@*         } *@
-@*          *@
-@*         new Chart(ctx, { *@
-@*         type: 'scatter', *@
-@*         data: data, *@
-@*         options: options *@
-@*         }); *@
-@* </script> *@
+<script>
+    var Countries = @Html.Raw(Json.Serialize(Model.OpeningDomestic))
+    var Labels = @Html.Raw(Json.Serialize(Model.CountriesLabels))
+    var CountriesCount = @Html.Raw(Json.Serialize(Model.OpeningDomestic))
+
+    var context = document.getElementById('countries').getContext('2d');
+
+    const data = {
+      labels: Labels,
+      datasets: [{
+        label: 'My First Dataset',
+        data: [11, 16, 7, 3, 14],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(75, 192, 192)',
+          'rgb(255, 205, 86)',
+          'rgb(201, 203, 207)',
+          'rgb(54, 162, 235)'
+        ]
+      }]
+    };
+    
+    const config = {
+      type: 'polarArea',
+      data: data,
+      options: {}
+    };
+
+    var myChart = new Chart(context, config);
+</script>
