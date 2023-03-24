@@ -10,9 +10,9 @@ public class Title
     
     public bool isadult { get; set; }
     
-    public int startyear { get; set; }
+    public int? startyear { get; set; }
     
-    public int endyear { get; set; }
+    public int? endyear { get; set; }
     
     public int runtimemin { get; set; }
 
@@ -26,13 +26,13 @@ public class Title
     
     public string parent { get; set; }
     
-    public Int64 budget { get; set; }
+    public Int64? budget { get; set; }
     
-    public int gross_domestic { get; set; }
+    public Int64 gross_domestic { get; set; }
     
-    public int gross_worldwide { get; set; }
+    public Int64 gross_worldwide { get; set; }
     
-    public int opening_weekend { get; set; }
+    public Int64 opening_weekend { get; set; }
     
     public string certificate { get; set; }
     

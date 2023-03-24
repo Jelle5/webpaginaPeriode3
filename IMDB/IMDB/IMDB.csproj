@@ -9,10 +9,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="ChartJS" Version="22.2.4" />
       <PackageReference Include="Dapper" Version="2.0.123" />
+      <PackageReference Include="FontAwesome" Version="4.7.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
       <PackageReference Include="Npgsql" Version="7.0.2" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
+      <PackageReference Include="OpenAI" Version="1.5.0" />
+      <PackageReference Include="R.NET" Version="1.9.0" />
     </ItemGroup>
 
 </Project>
