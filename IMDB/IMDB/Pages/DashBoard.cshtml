@@ -1,4 +1,8 @@
 @page
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using WebApplication2.Pages.Database.model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @model WebApplication2.Pages.DashBoard
 
 @{
@@ -9,10 +13,17 @@
 
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<div id="app"></div>
+<div class="container">
+    <canvas id="openingWeekend"></canvas>
+</div>
+<div class="container">
+    <canvas id="countries"></canvas>
+</div>
 <div class="container-fluid">
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -50,7 +61,6 @@
                 <td>@title.numvotes</td>
                 <td>@title.seasonnr</td>
                 <td>@title.episodenr</td>
-
             </tr>
         }
         </tbody>
@@ -64,7 +74,7 @@
                 <h5 class="modal-title" id="filtersModalLabel">Filters</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+            <form method="post" asp-page-handler="Filter">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -179,3 +189,77 @@
 </div>
 </body>
 </html>
+
+<script>
+    var OpeningDomestic = @Html.Raw(Json.Serialize(Model.OpeningDomestic))
+    var OpeningWorldwide = @Html.Raw(Json.Serialize(Model.OpeningWorldwide))
+
+    var context = document.getElementById('openingWeekend').getContext('2d');
+
+    const data = {
+        datasets: [{
+            label: 'Eerste weekend vs Nationale opbrengst',
+            data: OpeningDomestic,
+            backgroundColor: 'rgb(255, 99, 132)'
+        },
+        {
+            label: 'Eerste weekend vs Wereldwijde opbrengst',
+            data: OpeningWorldwide,
+            backgroundColor: 'rgb(155, 84, 255)'
+        }],
+    };
+
+    const config = {
+        type: 'scatter',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    display: true,
+                    align: 'center',
+                    text: 'opening weekend',
+                    type: 'logarithmic'
+                },
+                y: {
+                    display: true,
+                    align: 'center',
+                    text: 'opbrengst nationaal',
+                    type: 'logarithmic'
+                }
+            }
+        }
+    };
+
+    var myChart = new Chart(context, config);
+</script>
+
+<script>
+    var Countries = @Html.Raw(Json.Serialize(Model.OpeningDomestic))
+    var Labels = @Html.Raw(Json.Serialize(Model.CountriesLabels))
+    var CountriesCount = @Html.Raw(Json.Serialize(Model.OpeningDomestic))
+
+    var context = document.getElementById('countries').getContext('2d');
+
+    const data = {
+      labels: Labels,
+      datasets: [{
+        label: 'My First Dataset',
+        data: [11, 16, 7, 3, 14],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(75, 192, 192)',
+          'rgb(255, 205, 86)',
+          'rgb(201, 203, 207)',
+          'rgb(54, 162, 235)'
+        ]
+      }]
+    };
+    
+    const config = {
+      type: 'polarArea',
+      data: data,
+      options: {}
+    };
+
+    var myChart = new Chart(context, config);
+</script>
