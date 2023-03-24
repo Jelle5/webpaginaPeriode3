@@ -78,7 +78,7 @@ public class lists
         new Tuple<string, string>( "functie", "category"),
         new Tuple<string, string>( "baan", "job"),
         new Tuple<string, string>( "character", "character"),
-        new Tuple<string, string>( "naam", "characters")
+       //new Tuple<string, string>( "naam", "characters")
     };
 
     public List<Tuple<string, string>> company = new List<Tuple<string, string>>
@@ -108,7 +108,7 @@ public class lists
         new Tuple<string, string>( "regio", "region"),
         new Tuple<string, string>( "taal", "language"),
         new Tuple<string, string>( "hoofdtitel", "isoriginal"),
-        new Tuple<string, string>( "titel", "isoriginal")
+        //new Tuple<string, string>( "titel", "isoriginal")
     };
 
     public List<Tuple<string, string>> filter = new List<Tuple<string, string>>
@@ -126,8 +126,7 @@ public class lists
         new Tuple<string, string>("minder", "<"),
         new Tuple<string, string>("gelijk", "="),
         new Tuple<string, string>("gelijke", "="),
-        new Tuple<string, string>("gelijken", "="),
-        new Tuple<string, string>("is", "="),
+        new Tuple<string, string>("gelijken", "=")
     };
 
 
