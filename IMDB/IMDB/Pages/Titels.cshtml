@@ -9,11 +9,109 @@
 
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title></title>
 </head>
 <body>
-<div>
-    
+<div class="container">
+    <div id="F1829" style="width:50%; height:250px;"></div>
+    <div id="M1829" style="width:50%; height:250px;"></div>
+    <div id="M<18" style="width:50%; height:250px;"></div>
+    <div id="F<18" style="width:50%; height:250px;"></div>
 </div>
 </body>
 </html>
+
+@section Scripts
+{
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var ratings = @Html.Raw(Json.Serialize(Model.F1829Ratings));
+        var aantals = @Html.Raw(Json.Serialize(Model.F1829Aantal));
+        
+        var data = [{
+            x: ratings,
+            y: aantals,
+            type: 'bar'
+        }];
+        
+        var layout = {
+            title: 'Vrouwen 18-29 Ratings',
+            xaxis: {
+                title: 'Rating'
+            },
+            yaxis: {
+                title: 'Aantal waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('F1829', data, layout);
+    </script>
+    <script type="text/javascript">
+        var ratings = @Html.Raw(Json.Serialize(Model.M1829Ratings));
+        var aantals = @Html.Raw(Json.Serialize(Model.M1829Aantal));
+        
+        var data = [{
+            x: ratings,
+            y: aantals,
+            type: 'bar'
+        }];
+        
+        var layout = {
+            title: 'Vrouwen 18-29 Ratings',
+            xaxis: {
+                title: 'Rating'
+            },
+            yaxis: {
+                title: 'Aantal waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('M1829', data, layout);
+    </script>
+    <script type="text/javascript">
+        var ratings = @Html.Raw(Json.Serialize(Model.MSUB18Ratings));
+        var aantals = @Html.Raw(Json.Serialize(Model.MSUB18Aantal));
+        
+        var data = [{
+            x: ratings,
+            y: aantals,
+            type: 'bar'
+        }];
+        
+        var layout = {
+            title: 'Vrouwen 18-29 Ratings',
+            xaxis: {
+                title: 'Rating'
+            },
+            yaxis: {
+                title: 'Aantal waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('M<18', data, layout);
+    </script>
+    <script type="text/javascript">
+            var ratings = @Html.Raw(Json.Serialize(Model.FSUB18Ratings));
+            var aantals = @Html.Raw(Json.Serialize(Model.FSUB18Aantal));
+            
+            var data = [{
+                x: ratings,
+                y: aantals,
+                type: 'bar'
+            }];
+            
+            var layout = {
+                title: 'Vrouwen 18-29 Ratings',
+                xaxis: {
+                    title: 'Rating'
+                },
+                yaxis: {
+                    title: 'Aantal waarderingen'
+                }
+            };
+            
+            Plotly.newPlot('F<18', data, layout);
+        </script>
+}
