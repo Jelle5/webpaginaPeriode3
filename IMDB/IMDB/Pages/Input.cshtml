@@ -20,62 +20,65 @@
 </head>
 <body>
 <div style="text-align: center; margin-top: 10px">
+    <a>Deze pagina pakt 100 rijen van de gestelde vraag  |</a>
+    <a>  u mag alleen vergelijkingen met cijfers vragen  |</a>
+    <a>  max één vergelijking per keer! </a>
+</div>
+<div style="text-align: center; margin-top: 10px">
     <a>Stel één vraag:</a>
-  <form method="post" asp-page-handler="Vraag">
-    <input id="vraag" name="vraag" style="width: 750px"/>
-    <button class="btn btn-primary">Submit</button>
-  </form>
+    <form method="post" asp-page-handler="Vraag">
+        <input id="vraag" name="vraag" style="width: 750px"/>
+        <button class="btn btn-primary">Submit</button>
+    </form>
 </div>
 <div>
-  @if (Model.feedback.Count != 0)
-  {
-      
-      <p>Van welk veld wilt u @Model.feedback[10][0].Item1 @Model.feedback[11][0].Item1</p>
-    int iterator = 0;
-    foreach (var lists in Model.feedback)
+    @if (Model.feedback.Count != 0)
     {
-        
-      if (iterator != 10)
-      {
-        if (iterator != 11)
+
+        <p>Van welk veld wilt u @Model.feedback[10][0].Item1 @Model.feedback[11][0].Item1</p>
+        int iterator = 0;
+        foreach (var lists in Model.feedback)
         {
-          foreach (var colums in lists)
-          {
-            <form method="post" asp-page-handler="Antwoord">
-                <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
-                <div>
-                <button class="btn btn-primary" style="margin: 5px">@colums.Item1</button> 
-                <span>van kolom: @colums.Item2</span>
-                </div>
-            </form>
-          }
+
+            if (iterator != 10)
+            {
+                if (iterator != 11)
+                {
+                    foreach (var colums in lists)
+                    {
+                        <form method="post" asp-page-handler="Antwoord">
+                            <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
+                            <div>
+                                <button class="btn btn-primary" style="margin: 5px">@colums.Item1</button>
+                                <span>van kolom: @colums.Item2</span>
+                            </div>
+                        </form>
+                    }
+                }
+            }
+            iterator++;
         }
-      }
-      iterator++;
     }
-  }
-  
+
 </div>
 @if (Model.answer != null)
 {
-  <div style="margin: 5px">
-    @{
-        
-        // TODO: populate the DataTable with data from your database or other source
-    
-        // Get the column names from the DataTable
-        string[] columnNames = Model.answer.Columns.Cast<DataColumn>().Select(col => col.ColumnName).ToArray();
-    }
-    <table class="table table-bordered">
-        <thead>
+    <div style="margin: 5px">
+        @{
+
+            // Get the column names from the DataTable
+            string[] columnNames = Model.answer.Columns.Cast<DataColumn>().Select(col => col.ColumnName).ToArray();
+        }
+        <table class="table table-bordered">
+            <thead>
             <tr>
                 @foreach (string columnName in columnNames)
                 {
                     <th>@columnName</th>
                 }
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             @foreach (DataRow row in Model.answer.Rows)
             {
                 <tr>
@@ -85,10 +88,10 @@
                     }
                 </tr>
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-  </div>
+    </div>
 }
 </body>
 </html>

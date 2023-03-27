@@ -110,10 +110,14 @@ public class listsRepo
             sql += inner;
         }
 
-        sql += " WHERE ";
+        if (where.Count > 0)
         {
+            sql += " WHERE ";
+        }
+        
             foreach (var whereclause in where)
             {
+                
                 if (whereclause == where[0])
                 {
                     sql += whereclause + " ";
@@ -124,14 +128,14 @@ public class listsRepo
                 }
                 
             }
-        }
+        
         sql += " LIMIT 100";
         using var connection = getConnection();
         var dapperList = connection.Query(sql, queryParams).ToList();
         
         DataTable dt = new DataTable();
-
-        // Add columns to the DataTable based on the properties of the first row
+        
+        // voeg kolomen toe op basis van de properties van de eerste rij
         dynamic firstRow = dapperList.FirstOrDefault();
         if (firstRow != null)
         {
@@ -141,7 +145,7 @@ public class listsRepo
             }
         }
 
-        // Add rows to the DataTable
+        // voeg rows toe
         foreach (dynamic row in dapperList)
         {
             DataRow dr = dt.NewRow();
