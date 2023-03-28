@@ -10,13 +10,45 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <title></title>
 </head>
 <body>
-<div>
-    
+<div class="container">
+    <div id="Graph" style="width:100%; height:500px;"></div>
 </div>
 </body>
 </html>
+
+@section Scripts
+{
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var x = @Html.Raw(Json.Serialize(Model.x));
+        var y = @Html.Raw(Json.Serialize(Model.y));
+        var size = @Html.Raw(Json.Serialize(Model.size))
+        
+        var data = [{
+            x: x, 
+            y: y,
+            mode: 'markers',
+            marker: {
+                size: size
+            },
+            hovertemplate: 'Size: %{marker.size}<extra></extra>',
+        }];
+        
+        var layout = {
+            title: 'ratings',
+            xaxis: {
+                title: 'Genre',
+            },
+            yaxis: {
+                title: 'Gemiddelde Rating',
+                range: [5, 10]
+            }
+        };
+        
+        Plotly.newPlot('Graph', data, layout)
+    </script>
+}
 
