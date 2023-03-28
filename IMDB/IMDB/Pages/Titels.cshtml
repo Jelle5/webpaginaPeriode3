@@ -9,11 +9,280 @@
 
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title></title>
 </head>
 <body>
-<div>
-    
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+        <div id="F1829" style="width:100%; height:100%;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="M<18" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="M1829" style="width:100%; height:100%;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="F<18" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="cSnr" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="tAvg" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="tStartY" style="width:100%; height:100%;"></div>
+        </div>
+        <div class="col">
+            <div id="tEndY" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
+
+@section Scripts
+{
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    // Vrouwen 18-29
+    <script type="text/javascript">
+        var x = @Html.Raw(Json.Serialize(Model.F1829x));
+        var y = @Html.Raw(Json.Serialize(Model.F1829y));
+        
+        var data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+               color: x, 
+               colorscale: 'YlOrRd'
+            }
+        }];
+        
+        var layout = {
+            title: 'Vrouwen 18-29 Ratings',
+            xaxis: {
+                title: 'Rating'
+            },
+            yaxis: {
+                title: 'Waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('F1829', data, layout);
+    </script>
+    // Mannen 18-29
+    <script type="text/javascript">
+        var ratings = @Html.Raw(Json.Serialize(Model.M1829x));
+        var aantals = @Html.Raw(Json.Serialize(Model.M1829y));
+        
+        var data = [{
+            x: ratings,
+            y: aantals,
+            type: 'bar',
+            marker: {
+               color: x, 
+               colorscale: 'YlGnBu'
+            }
+        }];
+        
+        var layout = {
+            title: 'Mannen 18-29 Ratings',
+            xaxis: {
+                title: 'Rating'
+            },
+            yaxis: {
+                title: 'Waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('M1829', data, layout);
+    </script>
+    // Mannen onder 18
+    <script type="text/javascript">
+        var ratings = @Html.Raw(Json.Serialize(Model.MSUB18x));
+        var aantals = @Html.Raw(Json.Serialize(Model.MSUB18y));
+        
+        var data = [{
+            x: ratings,
+            y: aantals,
+            type: 'bar',
+            marker: {
+               color: x, 
+               colorscale: 'YlGnBu'
+            }
+        }];
+        
+        var layout = {
+            title: 'Mannen onder 18 Ratings',
+            xaxis: {
+                title: 'Rating'
+            },
+            yaxis: {
+                range: [0, 5000],
+                title: 'Waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('M<18', data, layout);
+    </script>
+    // Vrouwen onder 18
+    <script type="text/javascript">
+            var ratings = @Html.Raw(Json.Serialize(Model.FSUB18x));
+            var aantals = @Html.Raw(Json.Serialize(Model.FSUB18y));
+            
+            var data = [{
+                x: ratings,
+                y: aantals,
+                type: 'bar',
+                marker: {
+                   color: x, 
+                   colorscale: 'YlOrRd'
+                }
+            }];
+            
+            var layout = {
+                title: 'Vrouwen onder 18 Ratings',
+                xaxis: {
+                    title: 'Rating'
+                },
+                yaxis: {
+                    range: [0, 5000],
+                    title: 'Waarderingen'
+                }
+            };
+            
+            Plotly.newPlot('F<18', data, layout);
+        </script>
+    // count Season Nr
+    <script type="text/javascript">
+        var x = @Html.Raw(Json.Serialize(Model.cSnrx));
+        var y = @Html.Raw(Json.Serialize(Model.cSnry));
+        
+        var data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: x, 
+                colorscale: 'YlGnBu'   
+            }
+        }];
+        
+        var layout = {
+            title: 'Aantal afleveringen per seizoensnummer',
+            xaxis: {
+                range: [0, 250],
+                title: 'seizoensnummer'
+            },
+            yaxis: {
+                type: 'log',
+                title: 'Aantal afleveringen'
+            }
+        };
+        
+        Plotly.newPlot('cSnr', data, layout);
+    </script>
+    // title Avg Rating
+    <script type="text/javascript">
+        var x = @Html.Raw(Json.Serialize(Model.tAvgx));
+        var y = @Html.Raw(Json.Serialize(Model.tAvgy));
+        
+        var data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+               color: x, 
+               colorscale: 'Greens',
+               reversescale: true
+            }
+        }];
+        
+        var layout = {
+            title: 'Gemiddelde rating Titel',
+            xaxis: {
+                range: [0, 10],
+                title: 'Rating'
+            },
+            yaxis: {
+                type: 'log',
+                title: 'Waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('tAvg', data, layout);
+    </script>
+    // title EndYear
+    <script type="text/javascript">
+        var x = @Html.Raw(Json.Serialize(Model.tEndYx));
+        var y = @Html.Raw(Json.Serialize(Model.tEndYy));
+        
+        var data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+               color: x, 
+               colorscale: 'Greens',
+               reversescale: true
+            }
+        }];
+        
+        var layout = {
+            title: 'Title end Year',
+            xaxis: {
+                range: [1850, 2050],
+                title: 'Rating'
+            },
+            yaxis: {
+                type: 'log',
+                title: 'Waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('tEndY', data, layout);
+    </script>
+    // title StartYear
+        <script type="text/javascript">
+            var x = @Html.Raw(Json.Serialize(Model.tStartYx));
+            var y = @Html.Raw(Json.Serialize(Model.tStartYy));
+            
+            var data = [{
+                x: x,
+                y: y,
+                type: 'bar',
+                marker: {
+                   color: x, 
+                   colorscale: 'Greens',
+                   reversescale: true
+                }
+            }];
+            
+            var layout = {
+                title: 'title start year',
+                xaxis: {
+                    range: [1850, 2050],
+                    title: 'Rating'
+                },
+                yaxis: {
+                    type: 'log',
+                    title: 'Waarderingen'
+                }
+            };
+            
+            Plotly.newPlot('tStartY', data, layout);
+        </script>
+}
