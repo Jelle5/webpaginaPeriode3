@@ -22,16 +22,16 @@ public class listsRepo
 
         List<Tuple<string, string, string>> table = new List<Tuple<string, string, string>>
         {
-            new Tuple<string, string, string>("title", "", "tconst"),
-            new Tuple<string, string, string>("individual", "principals", "nconst"),
-            new Tuple<string, string, string>("genre", "genres", "gconst"),
-            new Tuple<string, string, string>("profession", "professions", "pconst"),
-            new Tuple<string, string, string>("ratings", "", ""),
-            new Tuple<string, string, string>("principals", "title", "tconst"),
-            new Tuple<string, string, string>("company", "companies", "coconst"),
-            new Tuple<string, string, string>("color", "colors", "cconst"),
-            new Tuple<string, string, string>("site", "sites", "sconst"),
-            new Tuple<string, string, string>("aka", "akas", "aconst")
+            new ("title", "", "tconst"),
+            new ("individual", "principals", "nconst"),
+            new ("genre", "genres", "gconst"),
+            new ("profession", "professions", "pconst"),
+            new ("ratings", "", ""),
+            new ("principals", "title", "tconst"),
+            new ("company", "companies", "coconst"),
+            new ("color", "colors", "cconst"),
+            new ("site", "sites", "sconst"),
+            new ("aka", "akas", "aconst")
         };
         
         foreach (var lijst in ultimate)
@@ -131,7 +131,17 @@ public class listsRepo
         
         sql += " LIMIT 100";
         using var connection = getConnection();
-        var dapperList = connection.Query(sql, queryParams).ToList();
+        IEnumerable<dynamic>? dapperList;
+        try
+        {
+            dapperList = connection.Query(sql, queryParams).ToList();
+        }
+        catch (Exception e)
+        {
+            dapperList = connection.Query("Select * from title Limit 100");
+        }
+        
+        
         
         DataTable dt = new DataTable();
         
@@ -152,7 +162,7 @@ public class listsRepo
 
             foreach (var property in row)
             {
-                dr[property.Key] = property.Value;
+                dr[property.Key] = property.Value ?? DBNull.Value;
             }
 
             dt.Rows.Add(dr);

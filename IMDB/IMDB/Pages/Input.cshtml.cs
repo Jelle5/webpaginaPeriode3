@@ -12,101 +12,50 @@ namespace WebApplication2.Pages;
 public class Input : PageModel
 {
     private listsRepo ultimatelist = new listsRepo();
-    public DataTable answer = new DataTable();
+    public DataTable result = new DataTable();
+    private InputList inputList = InputList.Instance;
+    
     
 
     public List<List<Tuple<string, string>>> feedback = new List<List<Tuple<string, string>>>();
     public IActionResult OnGet()
     {
+        if(inputList.GetFeedback())
+        {
+            feedback =  inputList.GetList();
         
-        string ultimate = Request.Cookies["answerlist"];
-        if (!string.IsNullOrEmpty(ultimate))
-        {
-            answer = ultimatelist.search( JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(ultimate));
         }
-        string Feedback = Request.Cookies["ultimatelist"];
-        if (!string.IsNullOrEmpty(Feedback))
+        else
         {
-            this.feedback =  JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(Feedback);
+            if(inputList.GetList().Count > 0 )
+            result = ultimatelist.search( inputList.GetList());
         }
-
+        
+        
         return Page();
     }
 
    
 
-    public IActionResult OnPostVraag([FromForm] string vraag)
+    public IActionResult OnPostQuestion([FromForm] string question)
     {
-        Response.Cookies.Delete("answerlist");
-        Response.Cookies.Delete("ultimatelist");
-        vraag = vraag.ToLower();
-        string json;
-        var list = GetWords(vraag);
-        var final = match(list);
-        if (final[11].Count == 0)
-        {
-             json = JsonConvert.SerializeObject( final);
-             
-             string ultimatelist = Request.Cookies["answerlist"];
-             if (ultimatelist == null)
-             {
-                 Response.Cookies.Append("answerlist", json, new CookieOptions()
-                 {
-                     Expires = DateTimeOffset.Now.AddDays(30)
-                 });
-             }
-             else
-             {
-                 Response.Cookies.Append("answerlist", json);
-             }
-        }
-        else
-        {
-
-            json = JsonConvert.SerializeObject(final);
-            string ultimatelist = Request.Cookies["ultimatelist"];
-            if (ultimatelist == null)
-            {
-                Response.Cookies.Append("ultimatelist", json, new CookieOptions()
-                {
-                    Expires = DateTimeOffset.Now.AddDays(30)
-                });
-            }
-            else
-            {
-                Response.Cookies.Append("ultimatelist", json);
-            }
-        }
-
-        
+        question = question.ToLower();
+        var list = GetWords(question);
+        inputList.match(list);
+        inputList.setBoolFeedback(true);
         return RedirectToPage();
     }
-    public IActionResult OnPostAntwoord([FromForm] string antwoord)
+    public IActionResult OnPostAnswer([FromForm] string answer)
     {
-        string ultimate = Request.Cookies["ultimatelist"];
-        Response.Cookies.Delete("ultimatelist");
-        feedback = JsonConvert.DeserializeObject<List<List<Tuple<string, string>>>>(ultimate);
+        inputList.setBoolFeedback(false);
+        
         List<Tuple<string, string>> where = new List<Tuple<string, string>>();
-        foreach (var ints in feedback[11])
+        foreach (var ints in inputList.GetList()[11])
         {
-            where.Add(Tuple.Create(ints.Item1, antwoord));
+            where.Add(Tuple.Create(ints.Item1, answer));
         }
-        feedback.RemoveAt(11);
-        feedback.Add(where);
-        string json = JsonConvert.SerializeObject( feedback);
-             
-        string ultimatelist = Request.Cookies["answerlist"];
-        if (ultimatelist == null)
-        {
-            Response.Cookies.Append("answerlist", json, new CookieOptions()
-            {
-                Expires = DateTimeOffset.Now.AddDays(30)
-            });
-        }
-        else
-        {
-            Response.Cookies.Append("answerlist", json);
-        }
+
+        inputList.ChangeAnswerList(where);
         
         return RedirectToPage();
     }
@@ -131,56 +80,5 @@ public class Input : PageModel
         }
 
         return word;
-    }
-
-    public List<List<Tuple<string, string>>> match(List<string> input)
-    {
-        List<List<Tuple<string, string>>> ultimate = new List<List<Tuple<string, string>>>();
-        
-        lists control = new lists();
-
-        ultimate.Add(control.Title.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.individual.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.genre.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.profession.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.ratings.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.principals.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.company.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.color.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.site.Where(t => input.Contains(t.Item1)).ToList());
-        
-        ultimate.Add(control.aka.Where(t => input.Contains(t.Item1)).ToList());
-        
-        List<Tuple<string, string>> filters =  control.filter.Where(t => input.Contains(t.Item1)).ToList();
-
-        List<Tuple<string, string>> ints = new List<Tuple<string, string>>();
-        
-        if (filters.Count != 0)
-        {
-            foreach (var inputs in input)
-            {
-                try
-                { 
-                    float.Parse(inputs);
-                    ints.Add(Tuple.Create(inputs, ""));
-                }
-                catch (Exception e)
-                {
-
-                }
-            }
-        }
-        ultimate.Add(filters);
-        ultimate.Add(ints);
-
-        return ultimate;
     }
 }

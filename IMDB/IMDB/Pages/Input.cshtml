@@ -26,8 +26,8 @@
 </div>
 <div style="text-align: center; margin-top: 10px">
     <a>Stel één vraag:</a>
-    <form method="post" asp-page-handler="Vraag">
-        <input id="vraag" name="vraag" style="width: 750px"/>
+    <form method="post" asp-page-handler="Question">
+        <input id="question" name="question" style="width: 750px"/>
         <button class="btn btn-primary">Submit</button>
     </form>
 </div>
@@ -46,8 +46,8 @@
                 {
                     foreach (var colums in lists)
                     {
-                        <form method="post" asp-page-handler="Antwoord">
-                            <input type="hidden" id="antwoord" name="antwoord" value="@colums.Item2"/>
+                        <form method="post" asp-page-handler="Answer">
+                            <input type="hidden" id="answer" name="answer" value="@colums.Item2"/>
                             <div>
                                 <button class="btn btn-primary" style="margin: 5px">@colums.Item1</button>
                                 <span>van kolom: @colums.Item2</span>
@@ -61,13 +61,13 @@
     }
 
 </div>
-@if (Model.answer != null)
+@if (Model.result != null)
 {
     <div style="margin: 5px">
         @{
 
             // Get the column names from the DataTable
-            string[] columnNames = Model.answer.Columns.Cast<DataColumn>().Select(col => col.ColumnName).ToArray();
+            string[] columnNames = Model.result.Columns.Cast<DataColumn>().Select(col => col.ColumnName).ToArray();
         }
         <table class="table table-bordered">
             <thead>
@@ -79,7 +79,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (DataRow row in Model.answer.Rows)
+            @foreach (DataRow row in Model.result.Rows)
             {
                 <tr>
                     @foreach (string columnName in columnNames)
