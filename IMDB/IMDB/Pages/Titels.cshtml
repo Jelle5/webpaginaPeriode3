@@ -56,7 +56,7 @@
 @section Scripts
 {
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    // Vrouwen 18-29
+    
     <script type="text/javascript">
         var x = @Html.Raw(Json.Serialize(Model.F1829x));
         var y = @Html.Raw(Json.Serialize(Model.F1829y));
@@ -83,7 +83,7 @@
         
         Plotly.newPlot('F1829', data, layout);
     </script>
-    // Mannen 18-29
+    
     <script type="text/javascript">
         var ratings = @Html.Raw(Json.Serialize(Model.M1829x));
         var aantals = @Html.Raw(Json.Serialize(Model.M1829y));
@@ -110,7 +110,7 @@
         
         Plotly.newPlot('M1829', data, layout);
     </script>
-    // Mannen onder 18
+    
     <script type="text/javascript">
         var ratings = @Html.Raw(Json.Serialize(Model.MSUB18x));
         var aantals = @Html.Raw(Json.Serialize(Model.MSUB18y));
@@ -138,7 +138,7 @@
         
         Plotly.newPlot('M<18', data, layout);
     </script>
-    // Vrouwen onder 18
+    
     <script type="text/javascript">
             var ratings = @Html.Raw(Json.Serialize(Model.FSUB18x));
             var aantals = @Html.Raw(Json.Serialize(Model.FSUB18y));
@@ -166,7 +166,7 @@
             
             Plotly.newPlot('F<18', data, layout);
         </script>
-    // count Season Nr
+    
     <script type="text/javascript">
         var x = @Html.Raw(Json.Serialize(Model.cSnrx));
         var y = @Html.Raw(Json.Serialize(Model.cSnry));
@@ -195,7 +195,7 @@
         
         Plotly.newPlot('cSnr', data, layout);
     </script>
-    // title Avg Rating
+    
     <script type="text/javascript">
         var x = @Html.Raw(Json.Serialize(Model.tAvgx));
         var y = @Html.Raw(Json.Serialize(Model.tAvgy));
@@ -225,7 +225,7 @@
         
         Plotly.newPlot('tAvg', data, layout);
     </script>
-    // title EndYear
+    
     <script type="text/javascript">
         var x = @Html.Raw(Json.Serialize(Model.tEndYx));
         var y = @Html.Raw(Json.Serialize(Model.tEndYy));
@@ -255,7 +255,7 @@
         
         Plotly.newPlot('tEndY', data, layout);
     </script>
-    // title StartYear
+    
         <script type="text/javascript">
             var x = @Html.Raw(Json.Serialize(Model.tStartYx));
             var y = @Html.Raw(Json.Serialize(Model.tStartYy));
