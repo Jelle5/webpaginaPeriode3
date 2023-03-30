@@ -131,7 +131,6 @@
                 title: 'Rating'
             },
             yaxis: {
-                range: [0, 5000],
                 title: 'Waarderingen'
             }
         };
@@ -159,7 +158,6 @@
                     title: 'Rating'
                 },
                 yaxis: {
-                    range: [0, 5000],
                     title: 'Waarderingen'
                 }
             };
@@ -184,7 +182,7 @@
         var layout = {
             title: 'Aantal afleveringen per seizoensnummer',
             xaxis: {
-                range: [0, 250],
+                range: [0, 400],
                 title: 'seizoensnummer'
             },
             yaxis: {
@@ -214,7 +212,6 @@
         var layout = {
             title: 'Gemiddelde rating Titel',
             xaxis: {
-                range: [0, 10],
                 title: 'Rating'
             },
             yaxis: {
@@ -244,7 +241,6 @@
         var layout = {
             title: 'Title end Year',
             xaxis: {
-                range: [1850, 2050],
                 title: 'Rating'
             },
             yaxis: {
@@ -256,7 +252,7 @@
         Plotly.newPlot('tEndY', data, layout);
     </script>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
             var x = @Html.Raw(Json.Serialize(Model.tStartYx));
             var y = @Html.Raw(Json.Serialize(Model.tStartYy));
 
@@ -274,7 +270,6 @@
             var layout = {
                 title: 'title start year',
                 xaxis: {
-                    range: [1850, 2050],
                     title: 'Rating'
                 },
                 yaxis: {

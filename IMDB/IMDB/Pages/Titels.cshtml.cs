@@ -1,6 +1,10 @@
+using System.Collections;
+using System.Data;
 using System.Net.Mime;
 using System.Text.Json;
+using Dapper;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApplication2.Pages.Database;
 using WebApplication2.Pages.Database.model;
 
 namespace WebApplication2.Pages;
@@ -26,68 +30,110 @@ public class Titels : PageModel
     
     public void OnGet()
     {
-        // Load your data here
-        string json = System.IO.File.ReadAllText("GraphData/female1829AllRatings.json");
-        var data = JsonSerializer.Deserialize<List<Ratings>>(json);
-
-        // Convert to arrays
-        F1829x = data.Select(x => x.x).ToArray();
-        F1829y = data.Select(x => x.y).ToArray();
-
-        json = System.IO.File.ReadAllText("GraphData/female1829AllRatings.json");
-        data = JsonSerializer.Deserialize<List<Ratings>>(json);
-
-        M1829x = data.Select(x => x.x).ToArray();
-        M1829y = data.Select(x => x.y).ToArray();
-
-        json = System.IO.File.ReadAllText("GraphData/maleUnder18AllRatings.json");
-        data = JsonSerializer.Deserialize<List<Ratings>>(json);
-
-        MSUB18x = data.Select(x => x.x).ToArray();
-        MSUB18y = data.Select(x => x.y).ToArray();
+        IEnumerable<demographic> demographics = getDemographics("female_18_29");
+        F1829x = demographics.Select(x => Math.Round(x.rating, 1)).ToArray();
+        F1829y = demographics.Select(x => x.count).ToArray();
         
-        json = System.IO.File.ReadAllText("GraphData/femaleUnder18AllRatings.json");
-        data = JsonSerializer.Deserialize<List<Ratings>>(json);
+        demographics = getDemographics("male_18_29");
+        M1829x = demographics.Select(x => Math.Round(x.rating, 1)).ToArray();
+        M1829y = demographics.Select(x => x.count).ToArray();
+        
+        demographics = getDemographics("male_under_18");
+        MSUB18x = demographics.Select(x => Math.Round(x.rating, 1)).ToArray();
+        MSUB18y = demographics.Select(x => x.count).ToArray();
+        
+        demographics = getDemographics("female_under_18");
+        FSUB18x = demographics.Select(x => Math.Round(x.rating, 1)).ToArray();
+        FSUB18y = demographics.Select(x => x.count).ToArray();
 
-        FSUB18x = data.Select(x => x.x).ToArray();
-        FSUB18y = data.Select(x => x.y).ToArray();
-        
-        json = System.IO.File.ReadAllText("GraphData/titleAvgRating.json");
-        data = JsonSerializer.Deserialize<List<Ratings>>(json);
+        IEnumerable<titleInfo> titleInfos = getTifleInfo();
+        tAvgx = titleInfos.Select(x => Math.Round(x.rating, 1)).ToArray();
+        tAvgy = titleInfos.Select(x => x.count).ToArray();
 
-        tAvgx = data.Select(x => x.x).ToArray();
-        tAvgy = data.Select(x => x.y).ToArray();
-        
-        json = System.IO.File.ReadAllText("GraphData/titleEndYear.json");
-        data = JsonSerializer.Deserialize<List<Ratings>>(json);
+        IEnumerable<seasonNr> seasonNrs = getSeasonNrs();
+        cSnrx = seasonNrs.Select(x => x.number).ToArray();
+        cSnry = seasonNrs.Select(x => x.count).ToArray();
 
-        tEndYx = data.Select(x => x.x).ToArray();
-        tEndYy = data.Select(x => x.y).ToArray();
+        IEnumerable<year> years = getYears();
+        tStartYx = years.Select(x => Math.Round(x.rating, 1)).ToArray();
+        tStartYy = years.Select(x => x.startyear).ToArray();
+        tEndYx = years.Select(x => Math.Round(x.rating, 1)).ToArray();
+        tEndYy = years.Select(x => x.endyear).ToArray();
+    }
+    
+    private IDbConnection getConnection()
+    {
+        return new DbUtils().Connect();
+    }
+    
+    public IEnumerable<demographic> getDemographics(string category)
+    {
+        string ratings = category + "_rating";
+        string numvotes = category + "_numvotes";
         
-        json = System.IO.File.ReadAllText("GraphData/titleStartYear.json");
-        data = JsonSerializer.Deserialize<List<Ratings>>(json);
+        string sql = $"SELECT DISTINCT {ratings} AS rating, SUM({numvotes}) AS count " +
+                     "FROM demographics " +
+                     $"GROUP BY {ratings}";
 
-        tStartYx = data.Select(x => x.x).ToArray();
-        tStartYy = data.Select(x => x.y).ToArray();
+
+        using var connection = getConnection();
+        var demographics = connection.Query<demographic>(sql);
+
+        return demographics;
+    }
+
+    public IEnumerable<titleInfo> getTifleInfo()
+    {
+        string sql = @"SELECT DISTINCT averagerating AS rating, COUNT(tconst) AS count FROM title GROUP BY averagerating";
         
-        json = System.IO.File.ReadAllText("GraphData/countSeasonNr.json");
-        var data2 = JsonSerializer.Deserialize<List<cSnr>>(json);
+        using var connection = getConnection();
+        var titleInfos = connection.Query<titleInfo>(sql);
+
+        return titleInfos;
+    }
+
+    public IEnumerable<seasonNr> getSeasonNrs()
+    {
+        string sql = @"SELECT DISTINCT seasonnr AS number, count(tconst) AS count FROM title GROUP BY seasonnr";
         
-        cSnrx = data2.Select(x => x.x).ToArray();
-        cSnry = data2.Select(x => x.y).ToArray();
+        using var connection = getConnection();
+        var seasonNrs = connection.Query<seasonNr>(sql);
+
+        return seasonNrs;
+    }
+
+    public IEnumerable<year> getYears()
+    {
+        string sql = @"SELECT DISTINCT averagerating AS rating, COUNT(startyear) AS startyear, COUNT(endyear) AS endyear FROM title GROUP BY averagerating";
+        
+        using var connection = getConnection();
+        var years = connection.Query<year>(sql);
+
+        return years;
     }
 }
 
-public class Ratings
+public class demographic
 {
-    public double x { get; set; }
-    public int y { get; set; }
+    public double rating { get; set; }
+    public int count { get; set; }
 }
 
-public class cSnr
+public class titleInfo
 {
-    public int x { get; set; }
-    public int y { get; set; }
+    public double rating { get; set; }
+    public int count { get; set; }
 }
 
+public class year
+{
+    public double rating { get; set; }
+    public int startyear { get; set; }
+    public int endyear { get; set; }
+}
 
+public class seasonNr
+{
+    public int number { get; set; }
+    public int count { get; set; }
+}
