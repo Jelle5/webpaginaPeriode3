@@ -14,10 +14,10 @@ public class Prediction : PageModel
     public void OnGet()
     {
         titles = new TitleRepo().getAllMovies();
-        
+
         var random = new Random();
         selection = titles.OrderBy(m => random.Next()).Take(100).ToList();
-        
-        
+
+
     }
 }

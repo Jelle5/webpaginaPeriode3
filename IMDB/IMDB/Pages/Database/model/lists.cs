@@ -6,8 +6,10 @@ public class lists
     {
         new Tuple<string, string>( "categorie", "type"),
         new Tuple<string, string>( "titel", "primarytitle"),
+        new Tuple<string, string>( "titels", "primarytitle"),
         new Tuple<string, string>( "films", "primarytitle"),
         new Tuple<string, string>( "volwassenen", "isadult"),
+        new Tuple<string, string>( "volwassen", "isadult"),
         new Tuple<string, string>( "start", "startyear"),
         new Tuple<string, string>( "eind", "endyear"),
         new Tuple<string, string>( "duur", "runtimemin"),
@@ -113,8 +115,7 @@ public class lists
 
     public List<Tuple<string, string>> filter = new List<Tuple<string, string>>
     {
-        new Tuple<string, string>("gemiddeld", ""),
-        new Tuple<string, string>("gemiddelde", ""),
+        
         new Tuple<string, string>("laag", "<"),
         new Tuple<string, string>("laagste", "<"),
         new Tuple<string, string>("hoger", ">"),
