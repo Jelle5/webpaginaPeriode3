@@ -256,33 +256,33 @@
         Plotly.newPlot('tEndY', data, layout);
     </script>
     // title StartYear
-        <script type="text/javascript">
-            var x = @Html.Raw(Json.Serialize(Model.tStartYx));
-            var y = @Html.Raw(Json.Serialize(Model.tStartYy));
-            
-            var data = [{
-                x: x,
-                y: y,
-                type: 'bar',
-                marker: {
-                   color: x, 
-                   colorscale: 'Greens',
-                   reversescale: true
-                }
-            }];
-            
-            var layout = {
-                title: 'title start year',
-                xaxis: {
-                    range: [1850, 2050],
-                    title: 'Rating'
-                },
-                yaxis: {
-                    type: 'log',
-                    title: 'Waarderingen'
-                }
-            };
-            
-            Plotly.newPlot('tStartY', data, layout);
-        </script>
+    <script type="text/javascript">
+        var x = @Html.Raw(Json.Serialize(Model.tStartYx));
+        var y = @Html.Raw(Json.Serialize(Model.tStartYy));
+        
+        var data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+               color: x, 
+               colorscale: 'Greens',
+               reversescale: true
+            }
+        }];
+        
+        var layout = {
+            title: 'title start year',
+            xaxis: {
+                range: [1850, 2050],
+                title: 'Rating'
+            },
+            yaxis: {
+                type: 'log',
+                title: 'Waarderingen'
+            }
+        };
+        
+        Plotly.newPlot('tStartY', data, layout);
+    </script>
 }

@@ -15,14 +15,24 @@ public class TitleRepo
 
     public IEnumerable<Title> getAll()
     {
-        string sql = @"SELECT * FROM title WHERE numvotes > 5000 order by random() LIMIT 100";
+        string sql = @"SELECT * FROM title WHERE numvotes > 5000 order by random() limit 100";
 
         using var connection = getConnection();
         var title = connection.Query<Title>(sql);
 
         return title;
     }
-    
+
+    public IEnumerable<Title> getAllMovies()
+    {
+        string sql = @"SELECT * FROM title WHERE numvotes > 5000 AND averagerating is not null";
+        
+        using var connection = getConnection();
+        var title = connection.Query<Title>(sql);
+
+        return title;
+    }
+
     public IEnumerable<Title> getTitle(string Tconst)
     {
         string sql = @"SELECT * FROM title WHERE tconst = @Tconst";

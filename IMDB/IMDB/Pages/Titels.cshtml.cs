@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApplication2.Pages.Database.model;
 
 namespace WebApplication2.Pages;
 
