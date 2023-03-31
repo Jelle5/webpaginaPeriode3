@@ -6,7 +6,7 @@ public class Title
     
     public string type { get; set; }
     
-    public string primary { get; set; }
+    public string primarytitle { get; set; }
     
     public bool isadult { get; set; }
     

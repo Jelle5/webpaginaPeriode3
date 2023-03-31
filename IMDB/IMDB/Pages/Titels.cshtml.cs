@@ -11,9 +11,9 @@ namespace WebApplication2.Pages;
 
 public class Titels : PageModel
 {
-    public double[] tEndYx;
+    public int[] tEndYx;
     public int[] tEndYy;
-    public double[] tStartYx;
+    public int[] tStartYx;
     public int[] tStartYy;
     public double[] F1829x { get; set; }
     public int[] F1829y { get; set; }
@@ -54,11 +54,13 @@ public class Titels : PageModel
         cSnrx = seasonNrs.Select(x => x.number).ToArray();
         cSnry = seasonNrs.Select(x => x.count).ToArray();
 
-        IEnumerable<year> years = getYears();
-        tStartYx = years.Select(x => Math.Round(x.rating, 1)).ToArray();
-        tStartYy = years.Select(x => x.startyear).ToArray();
-        tEndYx = years.Select(x => Math.Round(x.rating, 1)).ToArray();
-        tEndYy = years.Select(x => x.endyear).ToArray();
+        IEnumerable<year> start = getStartYears();
+        tStartYx = start.Select(x => x.startyear).ToArray();
+        tStartYy = start.Select(x => x.count).ToArray();
+        
+        IEnumerable<year> end = getEndYears();
+        tEndYx = end.Select(x => x.endyear).ToArray();
+        tEndYy = end.Select(x => x.count).ToArray();
     }
     
     private IDbConnection getConnection()
@@ -102,9 +104,19 @@ public class Titels : PageModel
         return seasonNrs;
     }
 
-    public IEnumerable<year> getYears()
+    public IEnumerable<year> getStartYears()
     {
-        string sql = @"SELECT DISTINCT averagerating AS rating, COUNT(startyear) AS startyear, COUNT(endyear) AS endyear FROM title GROUP BY averagerating";
+        string sql = @"SELECT DISTINCT startyear AS startyear, SUM(numvotes) AS count FROM title WHERE startyear is not null  GROUP BY startyear";
+        
+        using var connection = getConnection();
+        var years = connection.Query<year>(sql);
+
+        return years;
+    }
+    
+    public IEnumerable<year> getEndYears()
+    {
+        string sql = @"SELECT DISTINCT endyear AS endyear, SUM(numvotes) AS count FROM title WHERE endyear is not null GROUP BY endyear";
         
         using var connection = getConnection();
         var years = connection.Query<year>(sql);
@@ -127,7 +139,7 @@ public class titleInfo
 
 public class year
 {
-    public double rating { get; set; }
+    public int count { get; set; }
     public int startyear { get; set; }
     public int endyear { get; set; }
 }

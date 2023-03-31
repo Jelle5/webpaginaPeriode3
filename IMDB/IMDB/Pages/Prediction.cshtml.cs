@@ -2,6 +2,7 @@ using System.Collections;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearRegression;
 using MathNet.Numerics.Distributions;
+using MathNet.Numerics.Financial;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebApplication2.Pages.Database.model;
@@ -44,13 +45,16 @@ public class Prediction : PageModel
         Z = (verwachting - gemiddelde) / stdev;
 
         var normal = new Normal(gemiddelde, stdev);
-        PXLpercent = normal.InverseCumulativeDistribution(Z);;
-        PXRpercent = 100 - PXLpercent;
+        PXLpercent = normal.Density(Z) * 100;
+        //PXRpercent = 100 - PXLpercent;
         return RedirectToPage();
     }
     
     static double StandardDeviation(IEnumerable<double> values)
     {
+        double mean = values.Average();
+        double variance = values.Select(val => (val - mean) * (val - mean)).Sum() / (values.Count() - 1);
+        return Math.Sqrt(variance);
         double avg = values.Average();
         return Math.Sqrt(values.Average(v=>Math.Pow(v-avg,2)));
     }

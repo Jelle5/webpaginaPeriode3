@@ -27,7 +27,7 @@ public class Test : PageModel
         Companies = new companyRepo().getByTconst(tconst);
         foreach (var title in title)
         {
-            tname = title.primary;
+            tname = title.primarytitle;
             seasonepisode = "S" + @title.seasonnr + "." + @title.episodenr;
 
             if (title.startyear == 0)

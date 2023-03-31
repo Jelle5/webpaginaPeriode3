@@ -26,7 +26,7 @@ public class individualRepo
     {
         string sql = @"SELECT i.*, p.* FROM individual i inner join principals p on i.nconst = p.nconst
                         WHERE tconst = @Tconst
-                        ORDER BY i.primary";
+                        ORDER BY i.primaryindividual";
         using var connection = getConnection();
         var individual = connection.Query<individual, principals, individual>(sql,map:(i, p) =>
         {

@@ -23,7 +23,7 @@ public class PersonInfo : PageModel
         Titles = new TitleRepo().getByNconst(nconst);
         foreach (var individual in individuals)
         {
-            nname = individual.primary;
+            nname = individual.primaryindividual;
         }
     }
 }
