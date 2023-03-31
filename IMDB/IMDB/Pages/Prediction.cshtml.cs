@@ -22,16 +22,15 @@ public class Prediction : PageModel
     double gemiddelde { get; set; }
     double verwachting { get; set; }
     double stdev { get; set; }
-    double Z { get; set; }
-    double PXLpercent { get; set; }
-    double PXRpercent { get; set; }
+    public double PXLpercent { get; set; }
+    public double PXRpercent { get; set; }
 
-    public void OnGet()
+    public void OnGet(double PXLpercent2)
     {
-        titles = new TitleRepo().getAllMovies();
-        
-        var random = new Random();
-        selection = titles.OrderBy(m => random.Next()).Take(100).ToList();
+
+        PXLpercent = Math.Round(PXLpercent2, 1);
+        PXRpercent = Math.Round(100 - PXLpercent, 1);
+
     }
 
     public IActionResult OnPostChance()
@@ -41,12 +40,11 @@ public class Prediction : PageModel
         gemiddelde = data.Average();
         verwachting = 7.5;
         stdev = StandardDeviation(data);
-        Z = (verwachting - gemiddelde) / stdev;
 
-        var normal = new Normal(gemiddelde, stdev);
-        PXLpercent = normal.InverseCumulativeDistribution(Z);;
-        PXRpercent = 100 - PXLpercent;
-        return RedirectToPage();
+        Normal normal = new Normal(gemiddelde, stdev);
+        PXLpercent = normal.CumulativeDistribution(verwachting) * 100;
+
+        return RedirectToPage(new { PXLpercent2 = PXLpercent} );
     }
     
     static double StandardDeviation(IEnumerable<double> values)

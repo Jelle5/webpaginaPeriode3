@@ -25,7 +25,6 @@
     <form method="post" asp-page-handler="Chance" id="Chance">
         <select name="Genre" id="Genre" asp-for="Genre">
             <option value="Action">Action</option>
-            <option value="Adult">Adult</option>
             <option value="Adventure">Adventure</option>
             <option value="Animation">Animation</option>
             <option value="Biography">Biography</option>
@@ -58,5 +57,11 @@
     
 </div>
 
+<div>
+    De kans op een success is: @Model.PXRpercent %
+</div>
+<div>
+    De kans op falen is: @Model.PXLpercent %
+</div>
 </body>
 </html>
