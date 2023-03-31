@@ -23,14 +23,12 @@ public class Input : PageModel
         if(inputList.GetFeedback())
         {
             feedback =  inputList.GetList();
-        
         }
         else
         {
             if(inputList.GetList().Count > 0 )
-            result = ultimatelist.search( inputList.GetList());
+                result = ultimatelist.search( inputList.GetList());
         }
-        
         
         return Page();
     }
@@ -40,9 +38,13 @@ public class Input : PageModel
     public IActionResult OnPostQuestion([FromForm] string question)
     {
         question = question.ToLower();
+        
         var list = GetWords(question);
+        
         inputList.match(list);
+        
         inputList.setBoolFeedback(true);
+        
         return RedirectToPage();
     }
     public IActionResult OnPostAnswer([FromForm] string answer)

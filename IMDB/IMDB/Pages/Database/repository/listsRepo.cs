@@ -57,16 +57,13 @@ public class listsRepo
                             {
                                 foreach (var columns in ultimate[11])
                                 {
-                                    where.Add(columns.Item2 + " " + statement.Item2 + " " + columns.Item1.Replace(",", "."));
+                                    where.Add(columns.Item2 + " " + statement.Item2 + " " +
+                                              columns.Item1.Replace(",", "."));
                                 }
 
                             }
-                            
+
                         }
-                    }
-                    else if(count == 4)
-                    {
-                        // call andere functie later
                     }
                     else if(count != 11)
                     {
@@ -140,9 +137,12 @@ public class listsRepo
         {
             dapperList = connection.Query("Select * from title Limit 100");
         }
-        
-        
-        
+
+        return tableBuilder(dapperList);
+    }
+
+    private DataTable tableBuilder(IEnumerable<dynamic>? dapperList)
+    {
         DataTable dt = new DataTable();
         
         // voeg kolomen toe op basis van de properties van de eerste rij
