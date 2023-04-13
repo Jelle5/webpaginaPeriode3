@@ -4,7 +4,7 @@ public class individual
 {
     public string nconst { get; set; }
     
-    public string primary { get; set; }
+    public string primaryindividual { get; set; }
     
     public int? birthyear { get; set; }
     
